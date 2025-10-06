@@ -1,0 +1,132 @@
+body {
+  background: #111;
+  color: #fff;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center everything horizontally */
+}
+
+/* Style all buttons */
+button {
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 1em 2em;
+  margin: 1em;
+  border-radius: 12px;
+  font-size: 1.1em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* Shiny tile effect on hover */
+button::before {
+  content: '';
+  position: absolute;
+  top: -75%;
+  left: -75%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.2) 0%,
+    rgba(255,255,255,0.6) 50%,
+    rgba(255,255,255,0.2) 100%
+  );
+  transform: skewX(-20deg) translateX(-100%);
+  transition: transform 0.5s cubic-bezier(.4,2.3,.3,1);
+  pointer-events: none;
+}
+
+button:hover::before {
+  transform: skewX(-20deg) translateX(100%);
+}
+
+button:hover {
+  background: #333;
+  box-shadow: 0 4px 16px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.5);
+}
+
+#movie-poster {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 0 auto 1em auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  display: block;
+}
+
+#series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* <-- Use 1fr instead of max-content */
+  gap: 2em;
+  margin: 2em 0;
+  width: 100%;
+  box-sizing: border-box;
+  justify-items: center;     /* Center cards in grid cells */
+  align-items: center;
+}
+
+.series-card {
+  background: #232323;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  padding: 1em;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Remove width: 200px; */
+}
+
+.series-card:hover {
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 8px 32px rgba(255,255,255,0.08), 0 4px 24px rgba(0,0,0,0.35);
+}
+
+.series-card img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0.5em;
+  display: block;
+}
+
+.grid-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.series-card .series-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #ffd700;
+  margin-top: 0.5em;
+  text-align: center;
+}
+
+#series-detail {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95);}
+  to { opacity: 1; transform: scale(1);}
+}
