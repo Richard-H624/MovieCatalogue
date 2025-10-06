@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const SeriesSchema = new mongoose.Schema({
+const TVSeriesSchema = new mongoose.Schema({
   name: String,
   episodes: [
     {
@@ -9,4 +9,4 @@ const SeriesSchema = new mongoose.Schema({
     }
   ]
 });
-module.exports = mongoose.model('Series', SeriesSchema);
+module.exports = mongoose.model('Series', TVSeriesSchema);

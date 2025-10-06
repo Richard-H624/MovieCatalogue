@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const TVSeries = require('./TVSeries');
+const Series = require('./series');
 const MovieSeries = require('./MovieSeries');
 const path = require('path');
 const app = express();
@@ -120,8 +120,6 @@ const seriesArray = [
 
 
 ]
-
-
 
 mongoose.connection.once('open', () => {
   Series.deleteMany({}).then(() => {
