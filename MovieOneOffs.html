@@ -7,22 +7,44 @@
 </head>
 <body>
   <button id="back-to-home" class="btn btn-secondary mb-3" onclick="window.location.href='index.html'">⬅ Back to Homepage</button>
+  
+  <!-- Modal for details -->
+  <div class="modal fade" id="movieModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="modalPoster" class="img-fluid mb-3" />
+          <p id="modalSummary"></p>
+          <p id="modalBudget"></p>
+          <p id="modalEarnings"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="container py-4">
     <h1 class="mb-4 text-center">One-Off Movies Watched 2025</h1>
     <div class="row" id="oneoff-grid"></div>
   </div>
+
   <script>
+    let allMovies = [];
+
     fetch('/api/oneoffs')
       .then(res => res.json())
       .then(movies => {
-        console.log(movies); 
+        allMovies = movies;
         const grid = document.getElementById('oneoff-grid');
         grid.innerHTML = '';
-        movies.forEach(movie => {
+        movies.forEach((movie, idx) => {
           const col = document.createElement('div');
           col.className = 'col-md-4 mb-4';
           col.innerHTML = `
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm" style="cursor:pointer" data-movie="${idx}">
               <img src="${movie.poster}" class="card-img-top" alt="${movie.title}">
               <div class="card-body">
                 <h5 class="card-title">${movie.title} (${movie.year})</h5>
@@ -31,9 +53,23 @@
               </div>
             </div>
           `;
+          col.querySelector('.card').addEventListener('click', function() {
+            openModal(idx);
+          });
           grid.appendChild(col);
         });
       });
+
+    function openModal(idx) {
+      const movie = allMovies[idx];
+      document.getElementById('modalTitle').textContent = movie.title + ' (' + movie.year + ')';
+      document.getElementById('modalPoster').src = movie.poster;
+      document.getElementById('modalSummary').innerHTML = movie.summary;
+      document.getElementById('modalBudget').innerHTML = movie.budget ? `<b>Budget:</b> ${movie.budget}` : '';
+      document.getElementById('modalEarnings').innerHTML = movie.earnings ? `<b>Earnings:</b> ${movie.earnings}` : '';
+      const modal = new bootstrap.Modal(document.getElementById('movieModal'));
+      modal.show();
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

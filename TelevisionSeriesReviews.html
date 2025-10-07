@@ -20,9 +20,11 @@
         <p id="modalSummary"></p>
       </div>
       <div class="modal-footer justify-content-between">
-        <button id="prevEpisode" class="btn btn-secondary">Previous</button>
-        <button id="nextEpisode" class="btn btn-secondary">Next</button>
-      </div>
+  <button id="prevSeries" class="btn btn-primary">Previous Series</button>
+  <button id="prevEpisode" class="btn btn-secondary">Previous Episode</button>
+  <button id="nextEpisode" class="btn btn-secondary">Next Episode</button>
+  <button id="nextSeries" class="btn btn-primary">Next Series</button>
+    </div>
     </div>
   </div>
 </div>
@@ -30,17 +32,22 @@
     <h1 class="mb-4 text-center">Television Series Watched 2025</h1>
     <div class="row" id="series-grid"></div>
     </div>
-  <script>
+ <script>
+let allSeries = [];
+let currentSeries = null;
+let currentEpisode = 0;
+
 fetch('/api/series')
   .then(res => res.json())
   .then(seriesList => {
+    allSeries = seriesList;
     const grid = document.getElementById('series-grid');
     grid.innerHTML = '';
-    seriesList.forEach(series => {
+    seriesList.forEach((series, idx) => {
       const col = document.createElement('div');
       col.className = 'col-md-4 mb-4';
       col.innerHTML = `
-        <div class="card h-100 shadow-sm">
+        <div class="card h-100 shadow-sm" style="cursor:pointer" data-series="${idx}">
           <img src="${series.episodes[0]?.poster || ''}" class="card-img-top" alt="${series.name}">
           <div class="card-body">
             <h5 class="card-title">${series.name}</h5>
@@ -48,10 +55,53 @@ fetch('/api/series')
           </div>
         </div>
       `;
+      col.querySelector('.card').addEventListener('click', () => openDetail(idx, 0));
       grid.appendChild(col);
     });
     grid.className = 'row';
   });
+
+function openDetail(seriesIdx, episodeIdx) {
+  currentSeries = allSeries[seriesIdx];
+  currentEpisode = episodeIdx;
+  showEpisode();
+  const modal = new bootstrap.Modal(document.getElementById('seriesModal'));
+  modal.show();
+}
+
+function showEpisode() {
+  const ep = currentSeries.episodes[currentEpisode];
+  document.getElementById('modalTitle').textContent = ep.title || currentSeries.name;
+  document.getElementById('modalPoster').src = ep.poster || '';
+  document.getElementById('modalSummary').innerHTML = ep.summary || '';
+}
+
+document.getElementById('prevEpisode').onclick = () => {
+  if (currentEpisode > 0) {
+    currentEpisode--;
+    showEpisode();
+  }
+};
+document.getElementById('nextEpisode').onclick = () => {
+  if (currentEpisode < currentSeries.episodes.length - 1) {
+    currentEpisode++;
+    showEpisode();
+  }
+};
+
+document.getElementById('prevSeries').onclick = () => {
+  let idx = allSeries.indexOf(currentSeries);
+  if (idx > 0) {
+    openDetail(idx - 1, 0);
+  }
+};
+document.getElementById('nextSeries').onclick = () => {
+  let idx = allSeries.indexOf(currentSeries);
+  if (idx < allSeries.length - 1) {
+    openDetail(idx + 1, 0);
+  }
+};
+
 </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
