@@ -118,7 +118,7 @@ const movies = [
         budget: "<b>Budget: $108,000,000 <br> Box Office: $630,600,000</b>"
     },
     {
-        title: "Warhorse (2011) - 7.2",
+        title: "Warhorse (2011) - 3.8",
         poster: "https://upload.wikimedia.org/wikipedia/en/thumb/d/da/War-horse-poster.jpg/250px-War-horse-poster.jpg",
         summary: "Set during World War I, War Horse follows the journey of a horse named Joey, from his idyllic upbringing on a rural English farm to the battlefields of Europe. <p> Albert Narracott (Jeremy Irvine), a young boy, forms a deep bond with Joey, training and caring for him. When Joey is sold to the cavalry, Albert is heartbroken but promises to find him again. <p> Joey experiences the brutality of war, serving in the cavalry, with British soldiers, and later captured by German forces. Despite the horrors he witnesses, he forms bonds with various humans along the way, including soldiers who treat him with kindness. <p> Albert, determined to reunite with Joey, enlists in the army and eventually finds him amidst the chaos of war. Their reunion is poignant, emphasizing loyalty, love, and resilience. The film concludes with Joey returning to the Narracott farm, symbolizing hope and the enduring power of friendship.",
         budget: "<b>Budget: $66,000,000 <br> Box Office: $177,600,000</b>"
