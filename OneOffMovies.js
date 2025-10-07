@@ -1,12 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const OneOff = require('./OneOffs');
-const path = require('path');
-const { title } = require('process');
 const app = express();
+
 mongoose.connect('mongodb://localhost:27017/moviesdb');
 
-const OneOffsArray = [
+const OneOffArray = [
   {
     title: "Nightcrawler",
     poster: "https://upload.wikimedia.org/wikipedia/en/d/d4/Nightcrawlerfilm.jpg",
@@ -319,31 +318,21 @@ const OneOffsArray = [
     budget: "$225,000,000",
     earnings: "$615,800,000"
   }
-
-
 ]
 
+mongoose.connection.once('open', () => {
+  // Seed the database ONCE, then comment out or remove after first run
+  OneOff.deleteMany({}).then(() => {
+    OneOff.insertMany(OneOffArray)
+      .then(() => console.log("One-off movies seeded!"))
+      .catch(err => console.error(err));
+  });
 
+  // API endpoint for one-off movies
+  app.get('/api/oneoffs', async (req, res) => {
+    const movies = await OneOff.find();
+    res.json(movies);
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.get('/api/oneoffs', async (req, res) => {
-  const movies = await OneOff.find();
-  res.json(movies);
+  app.listen(3000, () => console.log('Server running on port 3000'));
 });

@@ -6,8 +6,8 @@ const OneOffSchema = new mongoose.Schema({
   summary: String,
   year: Number,
   rating: Number,
-  budget: Number,
-  earnings: Number
+  budget: String,
+  earnings: String
 });
 
 module.exports = mongoose.model('OneOff', OneOffSchema);
