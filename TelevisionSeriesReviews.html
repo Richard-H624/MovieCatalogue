@@ -46,15 +46,16 @@ fetch('/api/series')
     seriesList.forEach((series, idx) => {
       const col = document.createElement('div');
       col.className = 'col-md-4 mb-4';
-      col.innerHTML = `
-        <div class="card h-100 shadow-sm" style="cursor:pointer" data-series="${idx}">
-          <img src="${series.episodes[0]?.poster || ''}" class="card-img-top" alt="${series.name}">
-          <div class="card-body">
-            <h5 class="card-title">${series.name}</h5>
-            <p class="card-text">${series.episodes[0]?.summary || ''}</p>
-          </div>
-        </div>
-      `;
+     col.innerHTML = `
+  <div class="card h-100 shadow-sm" style="cursor:pointer" data-series="${idx}">
+    <img src="${series.episodes[0]?.poster || ''}" class="card-img-top" alt="${series.name}">
+    <div class="card-body">
+      <h5 class="card-title">${series.name}</h5>
+      <p class="card-text">${series.episodes[0]?.summary || ''}</p>
+      <span class="badge bg-primary">Rating: ${series.episodes[0]?.rating ?? ''}</span>
+    </div>
+  </div>
+`;
       col.querySelector('.card').addEventListener('click', () => openDetail(idx, 0));
       grid.appendChild(col);
     });

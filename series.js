@@ -5,7 +5,8 @@ const TVSeriesSchema = new mongoose.Schema({
     {
       title: String,
       poster: String,
-      summary: String
+      summary: String,
+      rating: Number
     }
   ]
 });

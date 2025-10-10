@@ -3,7 +3,10 @@ const EpisodeSchema = new mongoose.Schema({
   title: String,
   poster: String,
   summary: String,
-  budget: String
+  year: Number,
+  rating: Number,
+  budget: String,
+  earnings: String
 });
 const MovieSeriesSchema = new mongoose.Schema({
   name: String,
