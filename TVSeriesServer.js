@@ -138,6 +138,8 @@ const seriesArray = [
       { title: "Squid Games: Season 1", poster: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7b/Squid_Game_season_1_poster.png/250px-Squid_Game_season_1_poster.png", summary: ""},
       { title: "S01E01 - Red Light, Green Light", poster: "https://m.media-amazon.com/images/M/MV5BYWM4ZDVhYmEtYWI4Yi00OGJkLTgxZDgtZjQwZjhjYjMzZDA1XkEyXkFqcGc@._V1_QL75_UX388_.jpg", summary: "Down-on-his-luck gambler Seong Gi-hun joins a mysterious survival competition promising huge cash rewards. Along with 455 others, he’s taken to a secret facility and forced to play children’s games with deadly consequences. In the first game, “Red Light, Green Light,” hundreds are gunned down for moving at the wrong time, leaving the survivors horrified.", rating: 8.7 },
       { title: "S01E02 - Hell", poster: "https://m.media-amazon.com/images/M/MV5BNDAxNWVlYWYtYjRkMi00NDhiLThkOTUtMTAzZjJlZjExMmNlXkEyXkFqcGc@._V1_QL75_UX456_.jpg", summary: "The players vote to end the games and are released, only to find life outside is just as hopeless. Gi-hun faces debt and his mother’s illness, Sang-woo hides from the law, and others struggle to survive. With nothing left to lose, most of them, including Gi-hun, choose to return to the deadly games, seeking a chance at the prize money.", rating: 9.6 },
+      { title: "S01E03 - The Man with the Umbrella", poster: "https://m.media-amazon.com/images/M/MV5BNGFhZjdmODQtNjNkZS00ZThmLWE3OWQtOTJmZDIzOTg0NTFhXkEyXkFqcGc@._V1_QL75_UX448_.jpg", summary: "The contestants return to the facility, now aware that losing means death. A police officer named Jun-ho infiltrates the game by posing as a guard to find his missing brother. In the second challenge, players must carve shapes from honeycomb candy (dalgona) without breaking them. Gi-hun’s chosen shape, an umbrella, is the hardest, and many die. Gi-hun barely survives using his wits, while alliances start to form among players.", rating: 8.4 },
+      { title: "S01E04 - Stick to the Team", poster: "https://m.media-amazon.com/images/M/MV5BYTdlNDI1MDYtZDYwMS00YTQzLTlkNTMtMTI2MGYxODgwODZkXkEyXkFqcGc@._V1_QL75_UX458_.jpg", summary: "Tensions rise as players turn violent at night, attacking each other for survival. Gi-hun, Sang-woo, Ali, Sae-byeok, and the old man form a team for the next game. They face Tug-of-War, played high above the ground where losing means falling to your death. Using strategy instead of strength, their team manages to win, barely escaping death once again.", rating: 9.0 },
     ]
     }
 
@@ -438,15 +440,6 @@ const OneOffArray = [
     rating: 0,
     budget: "$95,000,000",
     earnings: "$75,500,000"
-  },
-  {
-    title: "Ice Road",
-    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/TheIceRoad.jpeg/250px-TheIceRoad.jpeg",
-    summary: "The Ice Road is a high-stakes action thriller starring Liam Neeson as Mike McCann, a tough ice-road truck driver. After a remote diamond mine in northern Canada suffers a tunnel collapse, trapping dozens of miners with dwindling oxygen, a risky rescue mission is launched. Mike, his brother Gurty (a veteran with PTSD and speech issues), veteran trucker Jim Goldenrod, driver Tantoo (whose brother is among the trapped miners), and an insurance actuary named Varnay are recruited to haul vital equipment.  Which includes a massive, heavy well-head; over fragile, thinning ice roads to reach the mine before it’s too late. Along the way, they battle harsh weather, cracking ice, vehicle failures, and betrayal from within, as they also uncover that the mining company may be concealing negligence. Despite the odds, Mike and his companions push forward to save the miners and expose the truth",
-    year: 2021,
-    rating: 2.8,
-    budget: null,
-    earnings: "$7,500,000"
   },
   {
     title: "Superman - James Gunn Version",
