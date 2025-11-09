@@ -86,14 +86,14 @@
     function resolveGridPage(originalPage){
       if(!originalPage) return '#';
       const map = {
-        'MovieOneOffs.html': 'OneOffsGridDisplay.html',
-        'MovieOneOffs': 'OneOffsGridDisplay.html',
-        'MovieSeriesReviews.html': 'MovieSeriesGrid.html',
-        'MovieSeriesReviews': 'MovieSeriesGrid.html',
-        'TelevisionSeriesReviews.html': 'TelevisionSeriesGrid.html',
-        'TelevisionSeriesReviews': 'TelevisionSeriesGrid.html'
-      };
-      return map[originalPage] || originalPage;
+       'MovieOneOffs.html': 'OneOffsGridDisplay.html',
+    'MovieOneOffs': 'OneOffsGridDisplay.html',
+    'MovieSeriesReviews.html': 'MovieSeriesGrid.html',
+    'MovieSeriesReviews': 'MovieSeriesGrid.html',
+    'TelevisionSeriesReviews.html': 'TelevisionSeriesGrid.html',
+    'TelevisionSeriesReviews': 'TelevisionSeriesGrid.html'
+  };
+  return map[originalPage] || originalPage;
     }
 
     // Return shuffledSlides for carousel + explicit featuredItems (last of each subcategory)

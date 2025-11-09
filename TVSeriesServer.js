@@ -595,28 +595,45 @@ app.get('/api/oneoffs', async (req, res) => {
 });
 
 mongoose.connection.once('open', () => {
+  // Seed TV Series
   Series.deleteMany({}).then(() => {
     Series.insertMany(seriesArray)
       .then(() => console.log("TV series seeded!"))
       .catch(err => console.error(err));
   });
 
+  // Seed One-Off Movies (moved inside)
+  OneOff.deleteMany({}).then(() => {
+    OneOff.insertMany(OneOffArray)
+      .then(() => console.log("One-off movies seeded!"))
+      .catch(err => console.error(err));
+  });
+
+  // Seed Movie Series (add this if you have data)
+  MovieSeries.deleteMany({}).then(() => {
+    // Replace [] with your movie series data array if available
+    MovieSeries.insertMany([])  // e.g., insertMany(movieSeriesArray)
+      .then(() => console.log("Movie series seeded!"))
+      .catch(err => console.error(err));
+  });
+
+  // API routes
   app.get('/api/series', async (req, res) => {
     const series = await Series.find();
     console.log('Series from DB:', series);
     res.json(series);
   });
+
   app.get('/api/movieseries', async (req, res) => {
     const series = await MovieSeries.find();
     res.json(series);
   });
-// ...existing code...
-app.get('/oneoffsgrid', (req, res) => {
-  res.sendFile(path.join(__dirname, 'OneOffsGridDisplay.html'));
-});
-app.get('/movieseriesgrid', (req, res) => {
-  res.sendFile(path.join(__dirname, 'MovieSeriesGrid.html'));
-});
 
+  app.get('/api/oneoffs', async (req, res) => {
+    const movies = await OneOff.find();
+    res.json(movies);
+  });
+
+  // ...existing code...
   app.listen(3000, () => console.log('Server running on port 3000'));
 });

@@ -1,23 +1,29 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const MovieSeries = require('./MovieSeries');
 const path = require('path');
+
 const app = express();
-mongoose.connect('mongodb://localhost:27017/moviesdb');
 
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/moviesdb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+// Define MovieSeries schema
+const movieSeriesSchema = new mongoose.Schema({
+  name: String,
+  episodes: [{
+    title: String,
+    poster: String,
+    summary: String,
+    rating: Number,
+    budget: String,
+    earnings: String
+  }]
 });
-app.get('/MovieSeriesReviews.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'MovieSeriesReviews.html'));
-});
-app.get('/MovieOneOffs.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'MovieOneOffs.html'));
-});
-app.get('/TelevisionSeriesReviews.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'TelevisionSeriesReviews.html'));
-});
+
+const MovieSeries = mongoose.model('MovieSeries', movieSeriesSchema);
 
 const movieSeriesArray = [ 
 {
@@ -93,6 +99,8 @@ const movieSeriesArray = [
 
 ]
 
+
+// Seed the database
 mongoose.connection.once('open', () => {
   MovieSeries.deleteMany({}).then(() => {
     MovieSeries.insertMany(movieSeriesArray)
@@ -100,10 +108,21 @@ mongoose.connection.once('open', () => {
       .catch(err => console.error(err));
   });
 
-app.get('/api/movieseries', async (req, res) => {
-  const movies = await MovieSeries.find().lean();
-  res.json(movies);
-});
+  app.get('/api/movieseries', async (req, res) => {
+    const movies = await MovieSeries.find().lean();
+    res.json(movies);
+  });
+
+  app.get('/movies', (req, res) => {
+    res.sendFile(path.join(__dirname, 'MovieSeriesReviews.html'));
+  });
+
+  app.get('/moviesgrid', (req, res) => {
+    res.sendFile(path.join(__dirname, 'MovieSeriesGrid.html'));
+  });
 
   app.listen(3000, () => console.log('Server running on port 3000'));
 });
+
+// Serve static files
+app.use(express.static(__dirname));
