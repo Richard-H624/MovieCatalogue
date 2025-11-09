@@ -7,16 +7,20 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <style>
-    .carousel-caption { background: rgba(0,0,0,0.5); border-radius: .5rem; padding: 1rem; color: #fff; }
-    .slide-img { width:100%; height:min(60vh,500px); max-height:75vh; object-fit:contain; object-position:center; background-color:#000; display:block; cursor:pointer; }
-    .card-img-top { width:100%; aspect-ratio:2/3; object-fit:contain; object-position:center; background-color:#fff; padding:.5rem; display:block; }
-    .featured-section { background:#f8f9fa; border-radius:.5rem; padding:2rem 1rem; margin-top:2rem; }
-    #seriesModalPoster { max-width:100%; max-height:60vh; object-fit:contain; display:block; margin:0 auto; }
+    .carousel-caption { background: rgba(0,0,0,0.5); border-radius:.5rem; padding:1rem; color:#fff; }
+    .slide-img { width:100%; height:min(60vh,520px); object-fit:contain; display:block; cursor:pointer; }
+    .stacked-feature { display:flex; flex-direction:column; gap:1rem; align-items:center; padding:0 0.5rem; }
+    .stack-item { width:100%; max-width:1600px; }
+    .stack-item .card > div { display:flex; gap:2.5rem; align-items:center; padding:2rem; min-height:240px; }
+    .stack-item .card-img-top { width:180px; height:180px; flex:0 0 180px; border-radius:.4rem; object-fit:cover; margin-right:2rem; }
+    .stack-item.reverse .card > div { flex-direction: row-reverse; }
+    @media (max-width: 576px) {
+      .stack-item .card > div { flex-direction: column; align-items:flex-start; padding:1rem; }
+      .stack-item .card-img-top { width:100%; height:auto; margin:0 0 .5rem 0; }
+    }
   </style>
 </head>
 <body>
-  <div id="greeting"></div>
-
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <button id="back-to-home" class="btn btn-secondary" onclick="window.location.href='index.html'">⬅ Back to Homepage</button>
@@ -30,7 +34,6 @@
       <li class="nav-item"><a class="nav-link" href="TelevisionSeriesReviews.html">TV Series</a></li>
     </ul>
 
-    <!-- Carousel -->
     <section class="mb-5">
       <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -47,14 +50,41 @@
       </div>
     </section>
 
-    <!-- Featured -->
     <section class="featured-section">
       <h2 class="mb-4 text-center">Featured</h2>
       <div class="row row-cols-1 row-cols-md-3 g-4" id="series-featured-row"></div>
     </section>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button id="grid-nav-btn" class="btn btn-primary">View Grid</button>
+    </div>
   </div>
 
-  <!-- Series modal -->
+  <!-- quick view modal -->
+  <div class="modal fade" id="seriesQuickViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <img id="seriesQuickViewPoster" src="" class="img-fluid rounded-start w-100 h-100" alt="poster" style="object-fit:cover;min-height:260px;">
+          </div>
+          <div class="col-md-7">
+            <div class="p-3">
+              <h5 id="seriesQuickViewTitle" class="mb-1"></h5>
+              <p id="seriesQuickViewMeta" class="small text-muted mb-2"></p>
+              <div id="seriesQuickViewSummary" style="max-height:18rem;overflow:auto;margin-bottom:0;"></div>
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <a id="seriesQuickViewOpenFull" class="btn btn-sm btn-primary" href="#" target="_self" rel="noopener">Open full page</a>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- series modal (full) -->
   <div class="modal fade" id="seriesModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -81,121 +111,183 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
+    const gid = id => document.getElementById(id);
+
     window.allSeries = window.allSeries || [];
     window.currentSeriesIdx = (typeof window.currentSeriesIdx === 'number') ? window.currentSeriesIdx : 0;
     window.currentEntryIdx = (typeof window.currentEntryIdx === 'number') ? window.currentEntryIdx : 0;
     window.seriesModalInstance = window.seriesModalInstance || null;
-    var allSeries = window.allSeries;
-    var currentSeriesIdx = window.currentSeriesIdx;
-    var currentEntryIdx = window.currentEntryIdx;
-    var seriesModalInstance = window.seriesModalInstance;
 
     function showSeriesModal(seriesIdx, entryIdx = 0) {
-      currentSeriesIdx = seriesIdx;
-      currentEntryIdx = entryIdx;
-      window.currentSeriesIdx = currentSeriesIdx;
-      window.currentEntryIdx = currentEntryIdx;
-      const series = allSeries[currentSeriesIdx] || {};
-      const ep = (series.episodes && series.episodes[currentEntryIdx]) || {};
-      document.getElementById('seriesModalTitle').textContent = ep.title || series.name || '';
-      document.getElementById('seriesModalPoster').src = ep.poster || '';
-      document.getElementById('seriesModalSummary').innerHTML = ep.summary || '';
-      document.getElementById('seriesModalBudget').innerHTML = ep.budget ? `<b>Budget:</b> ${ep.budget}` : '';
-      document.getElementById('seriesModalEarnings').innerHTML = ep.earnings ? `<b>Earnings:</b> ${ep.earnings}` : '';
-      document.getElementById('seriesModalScore').innerHTML = (typeof formatRatingBadge === 'function') ? formatRatingBadge(ep.rating, '') : '';
-      if (!seriesModalInstance) seriesModalInstance = new bootstrap.Modal(document.getElementById('seriesModal'));
-      window.seriesModalInstance = seriesModalInstance;
-      seriesModalInstance.show();
+      window.currentSeriesIdx = seriesIdx;
+      window.currentEntryIdx = entryIdx;
+      const series = window.allSeries[seriesIdx] || {};
+      const ep = (series.episodes && series.episodes[entryIdx]) || {};
+      gid('seriesModalTitle').textContent = ep.title || series.name || '';
+      gid('seriesModalPoster').src = ep.poster || '';
+      gid('seriesModalSummary').innerHTML = ep.summary || '';
+      gid('seriesModalBudget').innerHTML = ep.budget ? `<b>Budget:</b> ${ep.budget}` : '';
+      gid('seriesModalEarnings').innerHTML = ep.earnings ? `<b>Earnings:</b> ${ep.earnings}` : '';
+      gid('seriesModalScore').innerHTML = (typeof formatRatingBadge === 'function') ? formatRatingBadge(ep.rating, '') : '';
+      if (!window.seriesModalInstance) window.seriesModalInstance = new bootstrap.Modal(gid('seriesModal'));
+      window.seriesModalInstance.show();
     }
 
     document.getElementById('prevSeriesEntry').addEventListener('click', () => {
-      const series = allSeries[currentSeriesIdx];
+      const series = window.allSeries[window.currentSeriesIdx];
       if (!series || !series.episodes) return;
-      currentEntryIdx = (currentEntryIdx - 1 + series.episodes.length) % series.episodes.length;
-      showSeriesModal(currentSeriesIdx, currentEntryIdx);
+      window.currentEntryIdx = (window.currentEntryIdx - 1 + series.episodes.length) % series.episodes.length;
+      showSeriesModal(window.currentSeriesIdx, window.currentEntryIdx);
     });
     document.getElementById('nextSeriesEntry').addEventListener('click', () => {
-      const series = allSeries[currentSeriesIdx];
+      const series = window.allSeries[window.currentSeriesIdx];
       if (!series || !series.episodes) return;
-      currentEntryIdx = (currentEntryIdx + 1) % series.episodes.length;
-      showSeriesModal(currentSeriesIdx, currentEntryIdx);
+      window.currentEntryIdx = (window.currentEntryIdx + 1) % series.episodes.length;
+      showSeriesModal(window.currentSeriesIdx, window.currentEntryIdx);
     });
 
-    fetch('/api/movieseries')
-      .then(r => r.ok ? r.json() : [])
-      .then(list => {
-        allSeries = Array.isArray(list) ? list : [];
-        window.allSeries = allSeries;
+    gid('grid-nav-btn').addEventListener('click', () => location.href = 'MovieSeriesGrid.html');
 
-        const carouselInner = document.getElementById('series-carousel-inner');
-        carouselInner.innerHTML = '';
-        allSeries.forEach((series, idx) => {
+    // fetch and render
+    (async function init(){
+      try{
+        const res = await fetch('/api/movieseries');
+        const list = res.ok ? await res.json() : [];
+        window.allSeries = Array.isArray(list) ? list : [];
+
+        // slides (first episode) and expose for quick-view
+        const slides = window.allSeries.map((series, idx) => {
           const firstEp = (series.episodes && series.episodes[0]) || {};
+          return {
+            seriesIdx: idx,
+            title: firstEp.title || series.name || '',
+            poster: firstEp.poster || series.poster || '',
+            summary: firstEp.summary || series.summary || '',
+            year: firstEp.year || series.year || '',
+            rating: firstEp.rating
+          };
+        });
+        window.seriesSlides = slides;
+
+        // render carousel — ensure encoded title is lowercased to match grid matching logic
+        const carouselInner = gid('series-carousel-inner');
+        carouselInner.innerHTML = '';
+        slides.forEach((s, idx) => {
+          const encodedTitle = encodeURIComponent((s.title || '').trim()).toLowerCase();
+          const targetPage = 'MovieSeriesGrid.html';
           const slide = document.createElement('div');
           slide.className = 'carousel-item' + (idx === 0 ? ' active' : '');
           slide.innerHTML = `
-            <img src="${firstEp.poster || ''}" loading="lazy" class="d-block w-100 slide-img" alt="${series.name || ''}">
-            <div class="carousel-caption d-none d-md-block" style="cursor:pointer;">
-              <h5>${firstEp.title || series.name || ''}${firstEp.year ? ' ('+firstEp.year+')' : ''}</h5>
-              <p>${firstEp.summary || ''}</p>
-              ${(typeof formatRatingBadge === 'function') ? formatRatingBadge(firstEp.rating, '') : ''}
+            <img src="${s.poster || ''}" loading="lazy" class="d-block w-100 slide-img" alt="${s.title || ''}">
+            <div class="carousel-caption d-none d-md-block" style="cursor:default;">
+              <h5>${s.title || ''}</h5>
+              <p class="mb-1">${(s.summary || '').slice(0,160)}${(s.summary && s.summary.length>160)?'...':''}</p>
+              <div class="d-flex gap-2 align-items-center">
+                <button class="btn btn-sm btn-link p-0" data-view-more-idx="${idx}">View More</button>
+                <a class="btn btn-sm btn-outline-light ms-auto" href="${targetPage}#title=${encodedTitle}">Open full page</a>
+              </div>
             </div>
           `;
-          slide.addEventListener('click', () => showSeriesModal(idx, 0));
+          slide.addEventListener('click', (e) => {
+            if (e.target.closest('button') || e.target.closest('a')) return;
+            const el = document.querySelector(`[data-view-more-idx="${idx}"]`);
+            if (el) el.click();
+          });
           carouselInner.appendChild(slide);
         });
 
-        const featuredRow = document.getElementById('series-featured-row');
+        // featured: last 3, encode lowercase for grid anchors
+        const featuredRow = gid('series-featured-row');
         featuredRow.innerHTML = '';
-        const featured = allSeries.slice(-3).reverse();
+        const featured = window.allSeries.slice(-3).reverse();
         let featCounter = 0;
         featured.forEach(series => {
           const firstEp = (series.episodes && series.episodes[0]) || {};
+          const idx = window.allSeries.indexOf(series);
+          const collapseId = `feat-series-${featCounter++}`;
+          const targetTitle = encodeURIComponent((firstEp.title || series.name || '').trim()).toLowerCase();
           const col = document.createElement('div');
           col.className = 'col';
-          const collapseId = `feat-series-${featCounter++}`;
-          const targetTitle = encodeURIComponent((firstEp.title || series.name || '').trim());
           col.innerHTML = `
             <div class="card shadow-sm h-100" style="cursor:pointer">
-              <div style="display:flex;gap:1rem;align-items:center;padding:0.75rem;">
-                <img src="${firstEp.poster || ''}" loading="lazy" class="card-img-top" style="width:140px;height:140px;flex:0 0 140px;border-radius:.4rem;" alt="${series.name || ''}">
+              <div>
+                <img src="${firstEp.poster || series.poster || ''}" loading="lazy" class="card-img-top" alt="${series.name || ''}">
                 <div style="flex:1;">
-                  <h5 class="card-title mb-1">${firstEp.title || series.name || ''}${firstEp.year ? ' ('+firstEp.year+')' : ''}</h5>
-                  <p class="card-text mb-2">${(firstEp.summary || '').slice(0,140)}${(firstEp.summary && firstEp.summary.length>140) ? '...' : ''}</p>
+                  <h5 class="card-title mb-1">${firstEp.title || series.name || ''}${firstEp.year ? ' (' + firstEp.year + ')' : ''}</h5>
+                  <p class="card-text mb-2">${(firstEp.summary || series.summary || '').slice(0,300)}${(firstEp.summary && firstEp.summary.length>300)?'...':''}</p>
                   <div class="d-flex gap-2 align-items-center">
-                    <button class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">View More</button>
-                    <a class="btn btn-sm btn-outline-primary ms-auto" href="MovieSeriesReviews.html?title=${targetTitle}">Open full page</a>
+                    <button class="btn btn-sm btn-link p-0" data-view-more-idx="${idx}">View More</button>
+                    <a class="btn btn-sm btn-outline-primary ms-auto" href="MovieSeriesGrid.html#title=${targetTitle}">Open full page</a>
                   </div>
                   <div id="${collapseId}" class="collapse mt-2">
                     <p class="mb-2">${firstEp.summary || ''}</p>
-                    <a class="btn btn-sm btn-primary" href="MovieSeriesReviews.html?title=${targetTitle}">Open full page</a>
+                    <a class="btn btn-sm btn-primary" href="MovieSeriesGrid.html#title=${targetTitle}">Open full page</a>
                   </div>
                 </div>
               </div>
             </div>
           `;
+          // clicking card body opens full series modal (same as one-offs)
           col.querySelector('.card').addEventListener('click', (e) => {
             if (e.target.closest('button') || e.target.closest('a')) return;
-            const idx = allSeries.indexOf(series);
             showSeriesModal(idx, 0);
           });
           featuredRow.appendChild(col);
         });
 
-        // open matching series/entry when ?title= present
-       (function openIfTitleInUrl() {
-            try {
-              const params = new URLSearchParams(window.location.search);
-              const titleParam = params.get('title');
-              if (!titleParam) return;
-              const target = titleParam.trim().toLowerCase();
-              let idx = allMovies.findIndex(m => (m.title||'').trim().toLowerCase() === target);
-              if (idx === -1) idx = allMovies.findIndex(m => (m.title||'').toLowerCase().includes(target));
-              if (idx >= 0) setTimeout(() => showMovieModal(idx), 150);
-            } catch (e) { /* ignore */ }
-          })();
-      })
-      .catch(err => console.error(err));
+        // if ?title= in query open modal (keeps previous behavior)
+        (function openIfTitleInUrl(){
+          try {
+            const params = new URLSearchParams(window.location.search);
+            const titleParam = params.get('title');
+            if (!titleParam) return;
+            const target = titleParam.trim().toLowerCase();
+            let found = -1;
+            for (let si=0; si<window.allSeries.length; si++){
+              const firstEp = (window.allSeries[si].episodes && window.allSeries[si].episodes[0]) || {};
+              const candidate = (firstEp.title || window.allSeries[si].name || '').trim().toLowerCase();
+              if (candidate === target) { found = si; break; }
+            }
+            if (found >= 0) setTimeout(()=> showSeriesModal(found, 0), 150);
+          } catch(_) {}
+        })();
+
+      } catch (err) {
+        console.error('Failed to load series', err);
+      }
+    })();
+
+    // delegated: View More -> quick-view; quick-view Open full navigates to grid#title (lowercase-encoded)
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest && e.target.closest('[data-view-more-idx]');
+      if (!btn) return;
+      e.preventDefault();
+      const raw = btn.getAttribute('data-view-more-idx');
+      const idx = parseInt(raw, 10);
+      const slides = window.seriesSlides || [];
+      if (Number.isNaN(idx) || !slides.length || !slides[idx]) return;
+      const s = slides[idx];
+
+      gid('seriesQuickViewPoster').src = s.poster || '';
+      gid('seriesQuickViewTitle').textContent = (s.title || '') + (s.year ? ' ('+s.year+')' : '');
+      gid('seriesQuickViewSummary').textContent = s.summary || '';
+      gid('seriesQuickViewMeta').textContent = [ s.year ? 'Year: '+s.year : '', s.rating ? 'Rating: '+s.rating : '' ].filter(Boolean).join(' · ');
+
+      const targetHref = 'MovieSeriesGrid.html#title=' + encodeURIComponent((s.title||'').trim()).toLowerCase();
+      const openFull = gid('seriesQuickViewOpenFull');
+      if (openFull) {
+        openFull.setAttribute('href', targetHref);
+        openFull.onclick = function(ev){
+          ev.preventDefault();
+          const qm = bootstrap.Modal.getInstance(gid('seriesQuickViewModal'));
+          if (qm) qm.hide();
+          // navigate to grid; grid handles #title and will pop the card/modal
+          location.href = targetHref;
+        };
+      }
+
+      new bootstrap.Modal(gid('seriesQuickViewModal')).show();
+    });
   </script>
 </body>
 </html>

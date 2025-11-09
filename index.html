@@ -3,20 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home — Movie Reviews</title>
+  <title>Home — The Slop Bucket</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <style>
     .carousel-caption { background: rgba(0,0,0,0.5); border-radius:.5rem; padding:1rem; color:#fff; }
     .slide-img { width:100%; height:min(60vh,520px); object-fit:contain; display:block; cursor:pointer; }
     .stacked-feature { display:flex; flex-direction:column; gap:1rem; align-items:center; padding:0 0.5rem; }
-    .stack-item { width:100%; max-width:900px; }
+    .stack-item { width:100%; max-width:1600px; }
+    .stack-item .card > div { display:flex; gap:2.5rem; align-items:center; padding:2rem; min-height:240px; }
+    .stack-item .card-img-top { width:180px; height:180px; flex:0 0 180px; border-radius:.4rem; object-fit:cover; margin-right:2rem; }
+    .stack-item.reverse .card > div { flex-direction: row-reverse; }
+    @media (max-width: 576px) {
+      .stack-item .card > div { flex-direction: column; align-items:flex-start; padding:1rem; }
+      .stack-item .card-img-top { width:100%; height:auto; margin:0 0 .5rem 0; }
+    }
   </style>
 </head>
 <body>
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="h3 mb-0">Movie Reviews</h1>
+      <h1 class="h3 mb-0">The Slop Bucket</h1>
       <div class="btn-group">
         <a class="btn btn-sm btn-outline-primary" href="MovieSeriesReviews.html">Movie Series</a>
         <a class="btn btn-sm btn-outline-primary" href="MovieOneOffs.html">One-Off Movies</a>
@@ -24,7 +31,6 @@
       </div>
     </div>
 
-    <!-- Home carousel -->
     <section class="mb-5">
       <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -41,137 +47,222 @@
       </div>
     </section>
 
-    <!-- Featured stacked -->
     <section class="featured-section">
       <h2 class="mb-4 text-center">Featured</h2>
       <div id="home-featured-row" class="stacked-feature"></div>
     </section>
   </div>
 
+  <!-- quick view modal (same behavior as MovieOneOffs.html) -->
+  <div class="modal fade" id="homeQuickViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <img id="homeQuickViewPoster" src="" class="img-fluid rounded-start w-100 h-100" alt="poster" style="object-fit:cover;min-height:260px;">
+          </div>
+          <div class="col-md-7">
+            <div class="p-3">
+              <h5 id="homeQuickViewTitle" class="mb-1"></h5>
+              <p id="homeQuickViewMeta" class="small text-muted mb-2"></p>
+              <div id="homeQuickViewSummary" style="max-height:18rem;overflow:auto;margin-bottom:0;"></div>
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <a id="homeQuickViewOpenFull" class="btn btn-sm btn-primary" href="#" target="_self" rel="noopener">Open full page</a>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="ratings.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
- <script>
-    // render carousel slides using JS template literals (no stray ${...} in HTML)
+  <script>
+    const gid = id => document.getElementById(id);
+
+    function resolveGridPage(originalPage){
+      if(!originalPage) return '#';
+      const map = {
+        'MovieOneOffs.html': 'OneOffsGridDisplay.html',
+        'MovieOneOffs': 'OneOffsGridDisplay.html',
+        'MovieSeriesReviews.html': 'MovieSeriesGrid.html',
+        'MovieSeriesReviews': 'MovieSeriesGrid.html',
+        'TelevisionSeriesReviews.html': 'TelevisionSeriesGridDisplay.html',
+        'TelevisionSeriesReviews': 'TelevisionSeriesGridDisplay.html'
+      };
+      return map[originalPage] || originalPage;
+    }
+
+    // Return shuffledSlides for carousel + explicit featuredItems (last of each subcategory)
+    async function loadSlides() {
+      const [oneoffs, movieseries, tvseries] = await Promise.all([
+        fetch('/api/oneoffs').then(r => r.ok ? r.json() : []).catch(()=>[]),
+        fetch('/api/movieseries').then(r => r.ok ? r.json() : []).catch(()=>[]),
+        fetch('/api/series').then(r => r.ok ? r.json() : []).catch(()=>[])
+      ]);
+
+      // capture last entries per subcategory BEFORE any shuffle
+      const lastOneoff = (Array.isArray(oneoffs) && oneoffs.length) ? Object.assign({}, oneoffs[oneoffs.length - 1]) : null;
+      if (lastOneoff) lastOneoff.page = 'MovieOneOffs.html';
+
+      const lastMovieSeries = (Array.isArray(movieseries) && movieseries.length) ? movieseries[movieseries.length - 1] : null;
+      const lastMovieSeriesFirstEp = lastMovieSeries ? Object.assign({}, (lastMovieSeries.episodes && lastMovieSeries.episodes[0]) || {}) : null;
+      if (lastMovieSeriesFirstEp) lastMovieSeriesFirstEp.page = 'MovieSeriesReviews.html';
+
+      const lastTvSeries = (Array.isArray(tvseries) && tvseries.length) ? tvseries[tvseries.length - 1] : null;
+      const lastTvFirstEp = lastTvSeries ? Object.assign({}, (lastTvSeries.episodes && lastTvSeries.episodes[0]) || {}) : null;
+      if (lastTvFirstEp) lastTvFirstEp.page = 'TelevisionSeriesReviews.html';
+
+      // build slides for carousel (include all oneoffs and first episodes for series)
+      const slides = [];
+      (Array.isArray(oneoffs) ? oneoffs : []).forEach(m => slides.push(Object.assign({}, m, { page: 'MovieOneOffs.html', title: m.title || '' })));
+      (Array.isArray(movieseries) ? movieseries : []).forEach(s => {
+        const first = (s.episodes && s.episodes[0]) || {};
+        slides.push(Object.assign({}, first, { page: 'MovieSeriesReviews.html', title: first.title || s.name || s.title || '' }));
+      });
+      (Array.isArray(tvseries) ? tvseries : []).forEach(s => {
+        const first = (s.episodes && s.episodes[0]) || {};
+        slides.push(Object.assign({}, first, { page: 'TelevisionSeriesReviews.html', title: first.title || s.name || s.title || '' }));
+      });
+
+      // shuffled copy used for carousel
+      const shuffled = slides.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      // featured: exact last entries per subcategory in order: one-off, movie series, tv series
+      const featuredItems = [];
+      if (lastOneoff) featuredItems.push(Object.assign({}, lastOneoff, { title: lastOneoff.title || lastOneoff.name || '' }));
+      if (lastMovieSeriesFirstEp) featuredItems.push(Object.assign({}, lastMovieSeriesFirstEp, { title: lastMovieSeriesFirstEp.title || '' }));
+      if (lastTvFirstEp) featuredItems.push(Object.assign({}, lastTvFirstEp, { title: lastTvFirstEp.title || '' }));
+
+      return { shuffledSlides: shuffled, featuredItems };
+    }
+
     function renderCarousel(slides) {
-      const inner = document.getElementById('home-carousel-inner');
+      const inner = gid('home-carousel-inner');
       inner.innerHTML = '';
-      slides = Array.isArray(slides) ? slides : [];
+      window.homeSlides = slides;
       slides.forEach((s, idx) => {
-        const collapseId = `home-slide-collapse-${idx}`;
-        const encodedTitle = encodeURIComponent((s.title || s.name || '').trim());
+        const encodedTitle = encodeURIComponent((s.title || '').trim());
+        const targetPage = resolveGridPage(s.page || s.targetPage);
         const slide = document.createElement('div');
         slide.className = 'carousel-item' + (idx === 0 ? ' active' : '');
         slide.innerHTML = `
-          <img src="${s.poster || ''}" class="d-block w-100 slide-img" alt="${s.title || s.name || ''}">
+          <img src="${s.poster || ''}" loading="lazy" class="d-block w-100 slide-img" alt="${s.title || ''}">
           <div class="carousel-caption d-none d-md-block" style="cursor:default;">
-            <h5>${s.title || s.name || ''}</h5>
+            <h5>${s.title || ''}</h5>
             <p class="mb-1">${(s.summary || '').slice(0,160)}${(s.summary && s.summary.length>160)?'...':''}</p>
             <div class="d-flex gap-2 align-items-center">
-              <button class="btn btn-sm btn-link p-0 slide-view-more" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">View More</button>
-              <a class="btn btn-sm btn-outline-light ms-auto" href="${s.page || '#'}?title=${encodedTitle}">Open full page</a>
+              <button class="btn btn-sm btn-link p-0" data-view-more-idx="${idx}">View More</button>
+              <a class="btn btn-sm btn-outline-light ms-auto" href="${targetPage}#title=${encodedTitle}">Open full page</a>
             </div>
-            <div id="${collapseId}" class="collapse mt-2 text-start">
-              <p class="mb-1">${s.summary || ''}</p>
-              <a class="btn btn-sm btn-primary" href="${s.page || '#'}?title=${encodedTitle}">Open full page</a>
-            </div>
-            <div class="mt-2">${(typeof formatRatingBadge === 'function') ? formatRatingBadge(s.rating || s.score, '') : ''}</div>
           </div>
         `;
-        // prevent "View More" clicks from triggering slide click (if you have slide click handlers)
         slide.addEventListener('click', (e) => {
-          if (e.target.closest('.slide-view-more') || e.target.closest('a')) return;
-          if (typeof openHomeModal === 'function') openHomeModal(idx);
+          if (e.target.closest('button') || e.target.closest('a')) return;
+          const el = document.querySelector(`[data-view-more-idx="${idx}"]`);
+          if(el) el.click();
         });
         inner.appendChild(slide);
       });
     }
 
-    // render featured stacked cards (last items)
-    function renderFeatured(lastSeries, lastMovie, lastTv) {
-      const row = document.getElementById('home-featured-row');
+    // Render featured using explicit featuredItems (last-of-subcategory)
+    function renderFeaturedFromItems(items) {
+      const row = gid('home-featured-row');
       row.innerHTML = '';
-      const items = [
-        { item: lastSeries, title: lastSeries?.name || lastSeries?.title || 'Movie Series', page: 'MovieSeriesReviews.html' },
-        { item: lastMovie,  title: lastMovie?.title || 'One-Off Movie', page: 'MovieOneOffs.html' },
-        { item: lastTv,     title: lastTv?.name || lastTv?.title || 'TV Series', page: 'TelevisionSeriesReviews.html' }
-      ];
-
-      let counter = 0;
-      items.forEach(it => {
-        const data = it.item || {};
-        const collapseId = `feat-collapse-${counter++}`;
-        const encodedTitle = encodeURIComponent((data.title || data.name || it.title || '').trim());
+      (items || []).slice(0,3).forEach((s, order) => {
+        const encodedTitle = encodeURIComponent((s.title || '').trim());
+        const targetPage = resolveGridPage(s.page || s.targetPage);
         const wrapper = document.createElement('div');
-        wrapper.className = 'stack-item';
+        wrapper.className = 'stack-item' + (order % 2 === 1 ? ' reverse' : '');
         wrapper.innerHTML = `
           <div class="card shadow-sm h-100">
-            <div style="display:flex;gap:1rem;align-items:center;padding:0.75rem;">
-              <img src="${data.poster || ''}" class="card-img-top" style="width:140px;height:140px;flex:0 0 140px;border-radius:.4rem;" alt="${it.title}">
+            <div>
+              <img src="${s.poster || ''}" class="card-img-top" alt="${s.title || ''}">
               <div style="flex:1;">
-                <h5 class="card-title mb-1">${it.title}${data.year ? ' ('+data.year+')' : ''}</h5>
-                <p class="card-text mb-2">${(data.summary || '').slice(0,140)}${(data.summary && data.summary.length>140)?'...':''}</p>
+                <h5 class="card-title mb-1">${s.title || ''}${s.year ? ' ('+s.year+')' : ''}</h5>
+                <p class="card-text mb-2">${(s.summary || '').slice(0,300)}${(s.summary && s.summary.length>300)?'...':''}</p>
                 <div class="d-flex gap-2 align-items-center">
-                  <button class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">View More</button>
-                  <a class="btn btn-sm btn-outline-primary ms-auto" href="${it.page}?title=${encodedTitle}">Open full page</a>
+                  <button class="btn btn-sm btn-link p-0" data-view-more-idx="${order}">View More</button>
+                  <a class="btn btn-sm btn-outline-primary ms-auto" href="${targetPage}#title=${encodedTitle}">Open full page</a>
                 </div>
-                <div id="${collapseId}" class="collapse mt-2">
-                  <p class="mb-2">${data.summary || ''}</p>
-                  <a class="btn btn-sm btn-primary" href="${it.page}?title=${encodedTitle}">Open full page</a>
+                <div class="collapse mt-2">
+                  <p class="mb-2">${s.summary || ''}</p>
+                  <a class="btn btn-sm btn-primary" href="${targetPage}#title=${encodedTitle}">Open full page</a>
                 </div>
               </div>
             </div>
           </div>
         `;
-        // card click: open page/modal (don't navigate when clicking collapse toggle or link)
-        wrapper.querySelector('.card').addEventListener('click', (e) => {
+        const card = wrapper.querySelector('.card');
+        if (card) card.addEventListener('click', (e) => {
           if (e.target.closest('button') || e.target.closest('a')) return;
-          window.location.href = it.page + (encodedTitle ? `?title=${encodedTitle}` : '');
+          location.href = (targetPage || '#') + (encodedTitle ? `#title=${encodedTitle}` : '');
         });
         row.appendChild(wrapper);
       });
     }
 
-    // fetch data and populate the home UI
-    Promise.all([
-      fetch('/api/oneoffs').then(r => r.ok ? r.json() : []).catch(() => []),
-      fetch('/api/movieseries').then(r => r.ok ? r.json() : []).catch(() => []),
-      fetch('/api/series').then(r => r.ok ? r.json() : []).catch(() => [])
-    ]).then(([oneoffs, movieseries, tvseries]) => {
-      // build slides: prioritize one-offs, then movie series first episodes, then tv first episodes
-      const slides = [];
-      (Array.isArray(oneoffs) ? oneoffs : []).forEach(m => {
-        slides.push(Object.assign({}, m, { page: 'MovieOneOffs.html', title: m.title || '' }));
-      });
-      (Array.isArray(movieseries) ? movieseries : []).forEach(s => {
-        const first = (s.episodes && s.episodes[0]) || {};
-        slides.push(Object.assign({}, first, { page: 'MovieSeriesReviews.html', title: first.title || s.name || '' }));
-      });
-      (Array.isArray(tvseries) ? tvseries : []).forEach(s => {
-        const first = (s.episodes && s.episodes[0]) || {};
-        slides.push(Object.assign({}, first, { page: 'TelevisionSeriesReviews.html', title: first.title || s.name || '' }));
-      });
-
-        function shuffleArray(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
+    // delegated quick-view handler (works for carousel and featured)
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest && e.target.closest('[data-view-more-idx]');
+      if(!btn) return;
+      e.preventDefault();
+      const rawIdx = btn.getAttribute('data-view-more-idx');
+      // featured buttons use small local index; map them to actual items if needed
+      const slides = window.homeSlides || [];
+      const featuredRow = gid('home-featured-row');
+      // if button is inside featured, glean information from its containing card
+      if (featuredRow && featuredRow.contains(btn)) {
+        // featured items were rendered from featuredItems stored on window.lastFeaturedItems
+        const fitems = window.lastFeaturedItems || [];
+        const i = parseInt(rawIdx, 10);
+        if (!Number.isNaN(i) && fitems[i]) {
+          const s = fitems[i];
+          gid('homeQuickViewPoster').src = s.poster || '';
+          gid('homeQuickViewTitle').textContent = (s.title || '') + (s.year ? ' ('+s.year+')' : '');
+          gid('homeQuickViewSummary').textContent = s.summary || '';
+          gid('homeQuickViewMeta').textContent = [ s.year ? 'Year: '+s.year : '', s.rating ? 'Rating: '+s.rating : '' ].filter(Boolean).join(' · ');
+          gid('homeQuickViewOpenFull').href = resolveGridPage(s.page || s.targetPage) + '#title=' + encodeURIComponent((s.title||'').trim());
+          new bootstrap.Modal(gid('homeQuickViewModal')).show();
+          return;
         }
       }
-      shuffleArray(slides);
 
-      renderCarousel(slides);
-
-
-      renderCarousel(slides);
-
-      const lastSeries = (Array.isArray(movieseries) && movieseries.length) ? movieseries[movieseries.length - 1] : null;
-      const lastMovie = (Array.isArray(oneoffs) && oneoffs.length) ? oneoffs[oneoffs.length - 1] : null;
-      const lastTv = (Array.isArray(tvseries) && tvseries.length) ? tvseries[tvseries.length - 1] : null;
-      renderFeatured(lastSeries, lastMovie, lastTv);
-    }).catch(err => {
-      console.error('Failed to load home data', err);
+      // fallback: treat as carousel index into window.homeSlides
+      const idx = parseInt(rawIdx, 10);
+      if (Number.isNaN(idx) || !slides.length) return;
+      const i = ((idx % slides.length) + slides.length) % slides.length;
+      const s = slides[i] || {};
+      gid('homeQuickViewPoster').src = s.poster || '';
+      gid('homeQuickViewTitle').textContent = (s.title || '') + (s.year ? ' ('+s.year+')' : '');
+      gid('homeQuickViewSummary').textContent = s.summary || '';
+      gid('homeQuickViewMeta').textContent = [ s.year ? 'Year: '+s.year : '', s.rating ? 'Rating: '+s.rating : '' ].filter(Boolean).join(' · ');
+      gid('homeQuickViewOpenFull').href = resolveGridPage(s.page || s.targetPage) + '#title=' + encodeURIComponent((s.title||'').trim());
+      new bootstrap.Modal(gid('homeQuickViewModal')).show();
     });
+
+    (async function init(){
+      try {
+        const result = await loadSlides();
+        const slides = result.shuffledSlides || [];
+        const featuredItems = result.featuredItems || [];
+        window.homeSlides = slides;
+        // keep featured items accessible for quick-view mapping
+        window.lastFeaturedItems = featuredItems;
+        renderCarousel(slides);
+        renderFeaturedFromItems(featuredItems);
+      } catch (e) {
+        console.error('Failed to load home data', e);
+      }
+    })();
   </script>
 </body>
 </html>

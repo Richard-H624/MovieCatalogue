@@ -3,34 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>One-Off Movies Watched 2025</title>
+  <title>One-Off Movies — Movie Reviews</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <style>
-    .carousel-caption { background: rgba(0,0,0,0.5); border-radius: .5rem; padding: 1rem; color: #fff; }
-    .slide-img { width:100%; height:min(60vh,500px); max-height:75vh; object-fit:contain; object-position:center; background-color:#000; display:block; cursor:pointer; }
-    .card-img-top { width:100%; aspect-ratio:2/3; object-fit:contain; object-position:center; background-color:#fff; padding:.5rem; display:block; }
-    #movieModalPoster { max-width:100%; max-height:60vh; object-fit:contain; display:block; margin:0 auto; }
-    .featured-section { background:#f8f9fa; border-radius:.5rem; padding:2rem 1rem; margin-top:2rem; }
+    body { background:#0b1220; color:#e9eef8; }
+    .slide-img { width:100%; height:min(60vh,520px); object-fit:contain; background:#071422; display:block; }
+    .carousel-caption { background: rgba(0,0,0,0.45); border-radius:.4rem; padding:1rem; color:#fff; }
+    #back-home-btn { position: fixed !important; top:12px; left:12px; z-index:1200; }
+    @media (max-width:480px) { #back-home-btn { position: static; margin-bottom:.5rem; } }
+    .card-img-top { object-fit:cover; height:220px; }
   </style>
 </head>
 <body>
-  <div id="greeting"></div>
+  <a id="back-home-btn" class="btn btn-secondary" href="index.html">⬅ Back to Homepage</a>
 
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <button id="back-to-home" class="btn btn-secondary" onclick="window.location.href='index.html'">⬅ Back to Homepage</button>
       <h1 class="mb-0">One-Off Movies Watched 2025</h1>
-      <div></div>
+      <div class="btn-group">
+        <a class="btn btn-sm btn-outline-primary" href="index.html">Home</a>
+        <a class="btn btn-sm btn-outline-primary" href="MovieSeriesReviews.html">Movie Series</a>
+        <a class="btn btn-sm btn-outline-primary" href="TelevisionSeriesReviews.html">TV Series</a>
+      </div>
     </div>
 
-    <ul class="nav nav-pills justify-content-center mb-4">
-      <li class="nav-item"><a class="nav-link" href="MovieSeriesReviews.html">Movie Series</a></li>
-      <li class="nav-item"><a class="nav-link active" aria-current="page" href="MovieOneOffs.html">One-Off Movies</a></li>
-      <li class="nav-item"><a class="nav-link" href="TelevisionSeriesReviews.html">TV Series</a></li>
-    </ul>
-
-    <!-- Carousel -->
     <section class="mb-5">
       <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -47,150 +44,224 @@
       </div>
     </section>
 
-    <!-- Featured -->
     <section class="featured-section">
       <h2 class="mb-4 text-center">Featured</h2>
       <div class="row row-cols-1 row-cols-md-3 g-4" id="oneoff-featured-row"></div>
+      <div class="d-flex justify-content-end mt-4">
+        <button id="grid-nav-btn" class="btn btn-primary">View Grid</button>
+      </div>
     </section>
   </div>
 
-  <!-- Movie modal -->
-  <div class="modal fade" id="movieModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
+  <!-- main modal (detailed) -->
+  <div class="modal fade" id="movieModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark text-light">
         <div class="modal-header">
           <h5 class="modal-title" id="movieModalTitle"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body text-center">
-          <img id="movieModalPoster" class="img-fluid mb-3" alt="poster" />
-          <p id="movieModalSummary"></p>
-          <p id="movieModalBudget"></p>
-          <p id="movieModalEarnings"></p>
-          <p id="movieModalScore"></p>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 text-center mb-3">
+              <img id="movieModalPoster" src="" class="img-fluid rounded" alt="poster" />
+            </div>
+            <div class="col-md-8">
+              <p id="movieModalSummary"></p>
+              <p id="movieModalMeta" class="mb-0"></p>
+            </div>
+          </div>
         </div>
         <div class="modal-footer justify-content-between">
-          <button id="prevMovie" class="btn btn-secondary">Previous Movie</button>
-          <button id="nextMovie" class="btn btn-secondary">Next Movie</button>
+          <button id="prevMovie" class="btn btn-secondary">Previous</button>
+          <div>
+            <button id="prevInModal" class="btn btn-outline-secondary me-2">Prev</button>
+            <button id="nextInModal" class="btn btn-outline-secondary">Next</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- quick view modal for "View More" -->
+ <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <img id="quickViewPoster" src="" class="img-fluid rounded-start w-100 h-100" alt="poster" style="object-fit:cover;min-height:260px;">
+          </div>
+          <div class="col-md-7">
+            <div class="p-3">
+              <h5 id="quickViewTitle" class="mb-1"></h5>
+              <p id="quickViewMeta" class="small text-muted mb-2"></p>
+              <div id="quickViewSummary" style="max-height:18rem;overflow:auto;margin-bottom:0;"></div>
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <!-- anchor so href works; target/_self to stay same tab -->
+                <a id="quickViewOpenFull" class="btn btn-sm btn-primary" href="#" target="_self" rel="noopener">Open full page</a>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="ratings.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    window.allMovies = window.allMovies || [];
-    window.currentMovieIdx = (typeof window.currentMovieIdx === 'number') ? window.currentMovieIdx : 0;
-    window.movieModalInstance = window.movieModalInstance || null;
-    var allMovies = window.allMovies;
-    var currentMovieIdx = window.currentMovieIdx;
-    var movieModalInstance = window.movieModalInstance;
+  (function(){
+    const gid = id => document.getElementById(id);
+    let allMovies = [], currentIndex = 0, modalInstance = null;
 
-    function showMovieModal(idx) {
-      if (!allMovies || allMovies.length === 0) return;
-      currentMovieIdx = ((idx % allMovies.length) + allMovies.length) % allMovies.length;
-      window.currentMovieIdx = currentMovieIdx;
-      const movie = allMovies[currentMovieIdx] || {};
-      document.getElementById('movieModalTitle').textContent = (movie.title || '') + (movie.year ? ` (${movie.year})` : '');
-      document.getElementById('movieModalPoster').src = movie.poster || '';
-      document.getElementById('movieModalSummary').innerHTML = movie.summary || '';
-      document.getElementById('movieModalBudget').innerHTML = movie.budget ? `<b>Budget:</b> ${movie.budget}` : '';
-      document.getElementById('movieModalEarnings').innerHTML = movie.earnings ? `<b>Earnings:</b> ${movie.earnings}` : '';
-      document.getElementById('movieModalScore').innerHTML = typeof formatRatingBadge === 'function' ? formatRatingBadge(movie.rating) : '';
-
-      if (!movieModalInstance) movieModalInstance = new bootstrap.Modal(document.getElementById('movieModal'));
-      window.movieModalInstance = movieModalInstance;
-      movieModalInstance.show();
+    function formatMeta(m){
+      const p = [];
+      if(m.year) p.push('Year: ' + m.year);
+      if(m.rating) p.push('Rating: ' + m.rating);
+      if(m.budget) p.push('Budget: ' + m.budget);
+      if(m.earnings) p.push('Earnings: ' + m.earnings);
+      return p.join(' · ');
     }
 
-    document.getElementById('prevMovie').addEventListener('click', () => {
-      if (!allMovies.length) return;
-      currentMovieIdx = (currentMovieIdx - 1 + allMovies.length) % allMovies.length;
-      showMovieModal(currentMovieIdx);
-    });
-    document.getElementById('nextMovie').addEventListener('click', () => {
-      if (!allMovies.length) return;
-      currentMovieIdx = (currentMovieIdx + 1) % allMovies.length;
-      showMovieModal(currentMovieIdx);
+    function showMovieModal(idx){
+      if(!Array.isArray(allMovies) || !allMovies.length) return;
+      currentIndex = ((idx % allMovies.length) + allMovies.length) % allMovies.length;
+      const m = allMovies[currentIndex] || {};
+      gid('movieModalTitle').textContent = (m.title || '') + (m.year ? ' ('+m.year+')' : '');
+      gid('movieModalPoster').src = m.poster || '';
+      gid('movieModalSummary').textContent = m.summary || '';
+      gid('movieModalMeta').textContent = formatMeta(m);
+      if(!modalInstance) modalInstance = new bootstrap.Modal(gid('movieModal'));
+      modalInstance.show();
+    }
+
+    // quick view
+   function showQuickView(idx){
+      if(!Array.isArray(allMovies) || !allMovies.length) return;
+      const i = ((idx % allMovies.length) + allMovies.length) % allMovies.length;
+      const m = allMovies[i] || {};
+      gid('quickViewPoster').src = m.poster || '';
+      gid('quickViewTitle').textContent = (m.title || '') + (m.year ? ' ('+m.year+')' : '');
+      gid('quickViewSummary').textContent = m.summary || '';
+      gid('quickViewMeta').textContent = formatMeta(m);
+      // use hash so grid page can scroll/highlight instead of auto-opening its popup
+      gid('quickViewOpenFull').href = 'OneOffsGridDisplay.html#title=' + encodeURIComponent((m.title||'').trim());
+      new bootstrap.Modal(gid('quickViewModal')).show();
+    }
+
+    // delegated click for any data-view-more-idx
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest && e.target.closest('[data-view-more-idx]');
+      if(!btn) return;
+      e.preventDefault();
+      const idx = parseInt(btn.getAttribute('data-view-more-idx'), 10);
+      if(!Number.isNaN(idx)) showQuickView(idx);
     });
 
+    // modal nav buttons
+    gid('prevMovie').addEventListener('click', ()=> { if(!allMovies.length) return; currentIndex=(currentIndex-1+allMovies.length)%allMovies.length; showMovieModal(currentIndex); });
+    gid('prevInModal').addEventListener('click', ()=> { if(!allMovies.length) return; currentIndex=(currentIndex-1+allMovies.length)%allMovies.length; showMovieModal(currentIndex); });
+    gid('nextInModal').addEventListener('click', ()=> { if(!allMovies.length) return; currentIndex=(currentIndex+1)%allMovies.length; showMovieModal(currentIndex); });
+
+    // grid nav
+    const gridBtn = gid('grid-nav-btn');
+    if(gridBtn) gridBtn.addEventListener('click', ()=> location.href = 'OneOffsGridDisplay.html');
+
+    // fetch and render
     fetch('/api/oneoffs')
-      .then(r => r.ok ? r.json() : [])
+      .then(res => res.ok ? res.json() : Promise.reject('bad response'))
       .then(list => {
         allMovies = Array.isArray(list) ? list : [];
-        window.allMovies = allMovies;
 
-        // carousel slides
-        const carouselInner = document.getElementById('oneoff-carousel-inner');
-        carouselInner.innerHTML = '';
-        allMovies.forEach((movie, idx) => {
-          const slide = document.createElement('div');
-          slide.className = 'carousel-item' + (idx === 0 ? ' active' : '');
-          slide.innerHTML = `
-            <img src="${movie.poster || ''}" loading="lazy" class="d-block w-100 slide-img" alt="${movie.title || ''}">
-            <div class="carousel-caption d-none d-md-block" style="cursor:pointer;">
-              <h5>${movie.title || ''}${movie.year ? ' (' + movie.year + ')' : ''}</h5>
-              <p>${movie.summary || ''}</p>
-              ${typeof formatRatingBadge === 'function' ? formatRatingBadge(movie.rating, '') : ''}
-            </div>
-          `;
-          slide.addEventListener('click', () => showMovieModal(idx));
-          carouselInner.appendChild(slide);
-        });
+        // CAROUSEL: shuffle display order (indices) and map back to originals
+        const carouselInner = gid('oneoff-carousel-inner');
+        if(carouselInner){
+          carouselInner.innerHTML = '';
 
-        // featured last 3 with collapsible "View More" + deep link
-        const featuredRow = document.getElementById('oneoff-featured-row');
-        featuredRow.innerHTML = '';
-        const featured = allMovies.slice(-3).reverse();
-        let featCounter = 0;
-        featured.forEach(movie => {
-          const idx = allMovies.indexOf(movie);
-          const col = document.createElement('div');
-          col.className = 'col';
-          const collapseId = `feat-oneoff-${featCounter++}`;
-          const targetTitle = encodeURIComponent((movie.title || '').trim());
-          col.innerHTML = `
-            <div class="card shadow-sm h-100" style="cursor:pointer">
-              <div style="display:flex;gap:1rem;align-items:center;padding:0.75rem;">
-                <img src="${movie.poster || ''}" loading="lazy" class="card-img-top" style="width:140px;height:140px;flex:0 0 140px;border-radius:.4rem;" alt="${movie.title || ''}">
-                <div style="flex:1;">
-                  <h5 class="card-title mb-1">${movie.title || ''}${movie.year ? ' (' + movie.year + ')' : ''}</h5>
-                  <p class="card-text mb-2">${(movie.summary || '').slice(0,140)}${(movie.summary && movie.summary.length>140) ? '...' : ''}</p>
-                  <div class="d-flex gap-2 align-items-center">
-                    <button class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false">View More</button>
-                    <a class="btn btn-sm btn-outline-primary ms-auto" href="MovieOneOffs.html?title=${targetTitle}">Open full page</a>
-                  </div>
-                  <div id="${collapseId}" class="collapse mt-2">
-                    <p class="mb-2">${movie.summary || ''}</p>
-                    <a class="btn btn-sm btn-primary" href="MovieOneOffs.html?title=${targetTitle}">Open full page</a>
+          const indices = allMovies.map((_,i)=>i);
+          for(let i = indices.length - 1; i > 0; i--){
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+          }
+
+          indices.forEach((origIdx, sIdx) => {
+            const movie = allMovies[origIdx];
+            if(!movie) return;
+            const collapseId = `oneoff-slide-collapse-${sIdx}`;
+            const encodedTitle = encodeURIComponent((movie.title||'').trim());
+
+            const slide = document.createElement('div');
+            slide.className = 'carousel-item' + (sIdx === 0 ? ' active' : '');
+            slide.innerHTML = `
+                 <img src="${movie.poster||''}" loading="lazy" class="d-block w-100 slide-img" alt="${movie.title||''}">
+              <div class="carousel-caption d-none d-md-block text-start">
+                <h5>${movie.title||''}${movie.year? ' ('+movie.year+')' : ''}</h5>
+                <p class="mb-1">${(movie.summary||'').slice(0,160)}${(movie.summary&&movie.summary.length>160)?'...':''}</p>
+                <div class="d-flex gap-2 align-items-center">
+                  <button class="btn btn-sm btn-link p-0 text-white" data-view-more-idx="${origIdx}">View More</button>
+                  <a class="btn btn-sm btn-outline-light ms-auto" href="OneOffsGridDisplay.html#title=${encodedTitle}">Open full page</a>
+                </div>
+                <div id="${collapseId}" class="collapse mt-2 text-start bg-dark bg-opacity-50 p-2 rounded">
+                  <p class="mb-1 text-white">${movie.summary||''}</p>
+                  <a class="btn btn-sm btn-primary" href="OneOffsGridDisplay.html#title=${encodedTitle}">Open full page</a>
+                </div>
+              </div>
+            `;
+
+            slide.addEventListener('click', (e) => {
+              if(e.target.closest('a') || e.target.closest('button')) return;
+              showMovieModal(origIdx);
+            });
+
+            carouselInner.appendChild(slide);
+          });
+        }
+
+        // FEATURED: keep original order (last 3) but View More opens quick view
+        const featuredRow = gid('oneoff-featured-row');
+        if(featuredRow){
+          featuredRow.innerHTML = '';
+          const featured = allMovies.slice(-3).reverse();
+          featured.forEach((movie,i) => {
+            const idx = allMovies.indexOf(movie);
+            const collapseId = `feat-oneoff-${i}`;
+            const encodedTitle = encodeURIComponent((movie.title||'').trim());
+            const col = document.createElement('div');
+            col.className = 'col';
+            col.innerHTML = `
+              <div class="card shadow-sm h-100">
+                <img src="${movie.poster||''}" class="card-img-top" alt="${movie.title||''}">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">${movie.title||''}${movie.year? ' ('+movie.year+')':''}</h5>
+                  <p class="card-text">${(movie.summary||'').slice(0,400)}${(movie.summary&&movie.summary.length>400)?'...':''}</p>
+                  <div class="mt-auto d-flex gap-2 align-items-center">
+                    <button class="btn btn-sm btn-link p-0" data-view-more-idx="${idx}">View More</button>
+                    <a class="btn btn-sm btn-outline-primary ms-auto" href="OneOffsGridDisplay.html#title=${encodedTitle}">Open full page</a>
                   </div>
                 </div>
               </div>
-            </div>
-          `;
-          col.querySelector('.card').addEventListener('click', (e) => {
-            if (e.target.closest('button') || e.target.closest('a')) return;
-            showMovieModal(idx);
+            `;
+            const cardEl = col.querySelector('.card');
+            if(cardEl) cardEl.addEventListener('click', (e)=> { if(e.target.closest('a')||e.target.closest('button')) return; if(idx>=0) showMovieModal(idx); });
+            featuredRow.appendChild(col);
           });
-          featuredRow.appendChild(col);
-        });
+        }
 
-        // if ?title=... in URL open matching movie
-       (function openIfTitleInUrl() {
-           try {
-              const params = new URLSearchParams(window.location.search);
-              const titleParam = params.get('title');
-              if (!titleParam) return;
-              const target = titleParam.trim().toLowerCase();
-              let idx = allMovies.findIndex(m => (m.title||'').trim().toLowerCase() === target);
-              if (idx === -1) idx = allMovies.findIndex(m => (m.title||'').toLowerCase().includes(target));
-              if (idx >= 0) setTimeout(() => showMovieModal(idx), 150);
-            } catch (e) { /* ignore */ }
-          })();
+        // deep-link by ?title=...
+        try{
+          const params = new URLSearchParams(window.location.search);
+          const t = params.get('title');
+          if(t){
+            const target = decodeURIComponent(t).trim().toLowerCase();
+            let idx = allMovies.findIndex(m=> (m.title||'').trim().toLowerCase()===target);
+            if(idx===-1) idx = allMovies.findIndex(m=> (m.title||'').toLowerCase().includes(target));
+            if(idx>=0) setTimeout(()=> showMovieModal(idx), 200);
+          }
+        }catch(e){/*ignore*/}
       })
-      .catch(err => console.error(err));
+      .catch(err => { console.error('Failed to load movies', err); });
+  })();
   </script>
 </body>
 </html>

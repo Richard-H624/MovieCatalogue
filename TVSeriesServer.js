@@ -133,13 +133,18 @@ const seriesArray = [
     ]
     },
     {
-    name: "Squid Games: Season 1 (2021) - In-Progress",
+    name: "Squid Games: Season 1 (2021)",
     episodes: [
-      { title: "Squid Games: Season 1", poster: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7b/Squid_Game_season_1_poster.png/250px-Squid_Game_season_1_poster.png", summary: ""},
+      { title: "Squid Games: Season 1", poster: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7b/Squid_Game_season_1_poster.png/250px-Squid_Game_season_1_poster.png", summary: "Squid Game follows Seong Gi-hun, a kind but deeply indebted man, who joins a secret survival competition alongside 455 other financially desperate participants. They are taken to a hidden island where they must compete in a series of deadly children’s games, with losers executed on the spot. Each death increases the enormous cash prize, creating a brutal incentive to keep playing. As the games progress, Gi-hun forms alliances with other players—his childhood friend Sang-woo, North Korean defector Sae-byeok, migrant worker Ali, and the elderly Player 001. But survival soon turns everyone against each other as greed, fear, and desperation take over. Meanwhile, a police officer named Jun-ho infiltrates the facility, uncovering that the games are run by masked overseers and funded by wealthy elites who gamble on human lives for entertainment. In the end, only Gi-hun and Sang-woo remain. Gi-hun wins but is emotionally shattered, learning that the old man he trusted was secretly the creator of the games. Haunted by guilt and trauma, Gi-hun discovers the operation still continues and vows to stop it.", rating: 8.76},
       { title: "S01E01 - Red Light, Green Light", poster: "https://m.media-amazon.com/images/M/MV5BYWM4ZDVhYmEtYWI4Yi00OGJkLTgxZDgtZjQwZjhjYjMzZDA1XkEyXkFqcGc@._V1_QL75_UX388_.jpg", summary: "Down-on-his-luck gambler Seong Gi-hun joins a mysterious survival competition promising huge cash rewards. Along with 455 others, he’s taken to a secret facility and forced to play children’s games with deadly consequences. In the first game, “Red Light, Green Light,” hundreds are gunned down for moving at the wrong time, leaving the survivors horrified.", rating: 8.7 },
       { title: "S01E02 - Hell", poster: "https://m.media-amazon.com/images/M/MV5BNDAxNWVlYWYtYjRkMi00NDhiLThkOTUtMTAzZjJlZjExMmNlXkEyXkFqcGc@._V1_QL75_UX456_.jpg", summary: "The players vote to end the games and are released, only to find life outside is just as hopeless. Gi-hun faces debt and his mother’s illness, Sang-woo hides from the law, and others struggle to survive. With nothing left to lose, most of them, including Gi-hun, choose to return to the deadly games, seeking a chance at the prize money.", rating: 9.6 },
       { title: "S01E03 - The Man with the Umbrella", poster: "https://m.media-amazon.com/images/M/MV5BNGFhZjdmODQtNjNkZS00ZThmLWE3OWQtOTJmZDIzOTg0NTFhXkEyXkFqcGc@._V1_QL75_UX448_.jpg", summary: "The contestants return to the facility, now aware that losing means death. A police officer named Jun-ho infiltrates the game by posing as a guard to find his missing brother. In the second challenge, players must carve shapes from honeycomb candy (dalgona) without breaking them. Gi-hun’s chosen shape, an umbrella, is the hardest, and many die. Gi-hun barely survives using his wits, while alliances start to form among players.", rating: 8.4 },
       { title: "S01E04 - Stick to the Team", poster: "https://m.media-amazon.com/images/M/MV5BYTdlNDI1MDYtZDYwMS00YTQzLTlkNTMtMTI2MGYxODgwODZkXkEyXkFqcGc@._V1_QL75_UX458_.jpg", summary: "Tensions rise as players turn violent at night, attacking each other for survival. Gi-hun, Sang-woo, Ali, Sae-byeok, and the old man form a team for the next game. They face Tug-of-War, played high above the ground where losing means falling to your death. Using strategy instead of strength, their team manages to win, barely escaping death once again.", rating: 9.0 },
+      { title: "S01E05 - A Fair World", poster: "https://m.media-amazon.com/images/M/MV5BMDQxNjA4ZGItYjgzNi00N2RhLWFiOTQtNzljZTAwMWM2ODc5XkEyXkFqcGc@._V1_QL75_UX388_.jpg", summary: "After the Tug-of-War game, paranoia spreads among the survivors. The players realize fairness is an illusion. Jun-ho uncovers a dark side operation where guards harvest organs from the dead to sell on the black market. He secretly records evidence, discovering the hierarchy of masked workers and their strict rules. Meanwhile, the next challenge looms, with trust between players beginning to crumble.", rating: 7.6},
+      { title: "S01E06 - Gganbu", poster: "https://m.media-amazon.com/images/M/MV5BNmQ0YjA4MGQtYWY1ZC00ZDJiLThlNTktYTIyMWMyOWQ0YmY3XkEyXkFqcGc@._V1_QL75_UX328_.jpg", summary: "Players are told to choose a partner, only to learn they’ll face each other in a marble game where only one can live. The episode is emotional and devastating as Ali is tricked by Sang-woo, Sae-byeok bonds with Ji-yeong before she sacrifices herself, and Gi-hun deceives the old man, who appears to die after forgiving him. The episode marks the emotional heart of the series, highlighting how desperation destroys morality.", rating: 10.0},
+      { title: "S01E07 - VIPs", poster: "https://m.media-amazon.com/images/M/MV5BNmIyOGFmYTQtMjgyNy00MDk2LTg4MGUtMWUzNWM2YmI5Mzc4XkEyXkFqcGc@._V1_QL75_UX456_.jpg", summary: "Wealthy international elites, the VIPS, arrive to watch the games in person. The next challenge, a glass bridge, tests both luck and courage as players must step on tempered glass panels or fall to their deaths. Gi-hun survives with Sang-woo and Sae-byeok, but Sang-woo’s ruthlessness grows as he pushes another contestant to his death. Jun-ho escapes the island with evidence, pursued by the Front Man.", rating: 7.4},
+      { title: "S01E08 - Front Man", poster: "https://m.media-amazon.com/images/M/MV5BNzkwNzRmNDQtNDBjZC00MzIwLWEwM2YtYTQ0ZjgwNDIyMGY4XkEyXkFqcGc@._V1_QL75_UX364_.jpg", summary: "Only three players remain. They’re given a feast before the final game, tension mounting between Sang-woo, Gi-hun, and Sae-byeok. Meanwhile, Jun-ho reaches the mainland but is cornered by the Front Man, who reveals himself as Jun-ho’s missing brother before shooting him. Sae-byeok dies from her wounds that night, leaving only Gi-hun and Sang-woo alive for the final confrontation.", rating: 9.4},
+      { title: "S01E09 - One Lucky Day", poster: "https://m.media-amazon.com/images/M/MV5BOWRjYmViN2QtOWE3ZS00MWUyLWIyMzUtN2RhN2IyNWNmZmJhXkEyXkFqcGc@._V1_QL75_UX457_.jpg", summary: "The final Squid Game pits Gi-hun and Sang-woo in a brutal fight. Gi-hun wins but refuses to kill his friend; Sang-woo takes his own life so Gi-hun can claim victory. Afterward, Gi-hun receives the money but is haunted by guilt and trauma. A year later, he learns the old man was secretly the game’s creator, playing for amusement before dying. As Gi-hun prepares to move on, he discovers the games continue, and vows to stop them.", rating: 9.1}
     ]
     }
 
@@ -458,6 +463,123 @@ const OneOffArray = [
     rating: 5.1,
     budget: "$15,000,000",
     earnings: "$54,000,000"
+  },
+  {
+    title: "The Wailing",
+    poster: "https://upload.wikimedia.org/wikipedia/en/e/eb/The_Wailing_%28film%29.png",
+    summary: "In a quiet rural village, a series of gruesome murders and mysterious illnesses spread after the arrival of a reclusive Japanese stranger. Local police officer Jong-goo investigates the killings, which leave victims deranged and covered in strange boils. As fear grips the community, rumors circulate that the foreigner is behind it, practicing dark rituals. When Jong-goo’s young daughter Hyo-jin begins showing signs of possession, his desperation drives him to consult both a shaman and a Catholic priest. Their conflicting rituals escalate the terror, as it becomes unclear who or what is truly evil. In a nightmarish climax filled with deception and spiritual chaos, Jong-goo realizes too late that he’s been manipulated by unseen demonic forces.",
+    year: 2016,
+    rating: 9.0,
+    budget: "$8,000,000",
+    earnings: "$51,300,000"
+  },
+  {
+    title: "Battleship",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Battleship_poster.jpg/250px-Battleship_poster.jpg",
+    summary: "The story follows Alex Hopper (Taylor Kitsch), a reckless naval officer serving aboard the USS John Paul Jones. During international naval war games off the coast of Hawaii, Earth receives a response to a signal sent into space years earlier, but instead of friendly contact, alien ships arrive and erect a massive force field over the ocean. Cut off from the rest of the fleet, Alex and his crew must face off against the technologically superior invaders using strategy, courage, and classic naval tactics. As the battle intensifies, Alex matures from an impulsive troublemaker into a true leader. With help from his brother Stone (Alexander Skarsgård), fiancée Sam (Brooklyn Decker), and retired veterans, Alex launches a last stand aboard the decommissioned USS Missouri to defeat the aliens and save humanity.",
+    year: 2012,
+    rating: 4.4,
+    budget: "$209,000,000",
+    earnings: "$303,200,000"
+  },
+  {
+    title: "Deadstream",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Deadstream-poster.png/250px-Deadstream-poster.png",
+    summary: "A disgraced YouTuber, Shawn Ruddy, known for his reckless stunts, attempts to win back followers by livestreaming a night alone in a supposedly haunted house. Determined to prove it's all fake, he mocks the spirits until he accidentally unleashes a vengeful ghost named Mildred. As his livestream audience watches in horror, Shawn's night devolves into a chaotic, terrifying battle with supernatural forces, blending found-footage horror with dark comedy.",
+    year: 2022,
+    rating: 3.5,
+    budget: null,
+    earnings: null
+  },
+  {
+    title: "Tarot",
+    poster: "https://upload.wikimedia.org/wikipedia/en/1/10/Tarot_Teaser_Poster.jpg",
+    summary: "A group of college friends, partying in a remote mansion, discover a mysterious deck of tarot cards. Ignoring the warning never to use another person’s deck, they perform a reading for fun—unleashing a malevolent entity tied to the cards. Each player is hunted and killed in ways that mirror their fortune. As the survivors race to understand the curse, they realize they’ve invoked something ancient that can’t be easily stopped.",
+    year: 2024,
+    rating: 2.8,
+    budget: "$8,000,000",
+    earnings: "$49,300,000"
+  },
+  {
+    title: "Match",
+    poster: "https://www.imdb.com/title/tt37436190/mediaviewer/rm610445314/?ref_=tt_ov_i",
+    summary: "After Paola is matched with a handsome online suitor, she arrives for a first date to discover a house full of dark and terrifying secrets.",
+    year: 2024,
+    rating: 2.6,
+    budget: null,
+    earnings: null
+  },
+  {
+    title: "Host",
+    poster: "https://upload.wikimedia.org/wikipedia/en/9/94/Host_%28film%29.jpg",
+    summary: "Set entirely on a Zoom call during the COVID lockdown, six friends hire a medium to conduct a virtual séance. When one of them fakes a ghostly encounter, they accidentally invite a real malevolent spirit into their homes. One by one, the demon attacks through the digital connection, killing them in chilling, creative ways. Shot entirely on screens, Host is a masterclass in minimalist horror and modern isolation.",
+    year: 2020,
+    rating: 2.6,
+    budget: "$100,000",
+    earnings: "$443,807"
+  },
+  {
+    title: "Weapons",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/6/6d/Weapons_film_2025.jpeg/250px-Weapons_film_2025.jpeg",
+    summary: "From director Zach Cregger (Barbarian), Weapons is an ensemble horror-drama set in a small American town. One night, seventeen children vanish after leaving their homes simultaneously. The film follows several intersecting characters: the children's homeroom teacher, a grieving father, a troubled addict, and local police officer, as they uncover how the disappearances tie to a series of bizarre, possibly supernatural events. Tension builds toward a disturbing revelation about human cruelty and mass hysteria.",
+    year: 2025,
+    rating: 9.4,
+    budget: "$38,000,000",
+    earnings: "$268,000,000"
+  },
+  {
+    title: "Hereditary",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/d/d9/Hereditary.png/250px-Hereditary.png",
+    summary: "After the death of her secretive mother, Annie Graham and her family begin to unravel under a series of strange and terrifying events. Their grief exposes dark family secrets, leading to possession, death, and madness. Annie learns her family is cursed by a demonic cult worshipping King Paimon, which has been manipulating generations to summon him into a human host. The film’s dread-filled atmosphere builds to a shocking, unforgettable finale.",
+    year: 2018,
+    rating: 9.4,
+    budget: "$10,000,000",
+    earnings: "$90,200,000"
+  },
+  {
+    title: "Texas Chainsaw Massacre", 
+    poster: "https://upload.wikimedia.org/wikipedia/en/a/a0/The_Texas_Chain_Saw_Massacre_%281974%29_theatrical_poster.jpg",
+    summary: "A group of friends road-tripping through rural Texas stumble upon a house of horrors inhabited by a family of cannibals, led by the monstrous Leatherface, who wields a chainsaw and wears masks made of human skin. As the friends are hunted and butchered, survivor Sally Hardesty becomes the first “final girl” in horror cinema. The film’s gritty realism and relentless violence redefined the slasher genre.",
+    year: 1974,
+    rating: 6.6,
+    budget: "$140,000",
+    earnings: "$30,900,000"
+  },
+  {
+    title: "Popeye's Revenge",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/6/67/Popeye%27s_Revenge.jpeg/250px-Popeye%27s_Revenge.jpeg",
+    summary: "When a group of urban explorers attempts to reopen a long-abandoned summer camp, they uncover the dark history of “Popeye,” a disfigured ex-counselor who died in a bullying incident decades earlier. As they work to restore the site, the vengeful spirit of Popeye returns, seeking bloody revenge on anyone who enters his territory. The film mixes slasher and supernatural horror in a grim throwback to 1980s camp slashers.",
+    year: 2025,
+    rating: 0.9,
+    budget: null,
+    earnings: null
+  },
+  {
+    title: "Good Boy",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/e/ee/Good_Boy_2025_film_poster.jpg/250px-Good_Boy_2025_film_poster.jpg",
+    summary: "Told from the perspective of Indy, a loyal dog, the story follows his growing unease after his owner moves into a new home filled with strange noises and dark energy. As supernatural forces threaten his human, Indy becomes both protector and witness to horrifying events. The film uses the dog’s perspective to explore loyalty, helplessness, and love in the face of evil.",
+    year: 2025,
+    rating: 6.4,
+    budget: "$750,000",
+    earnings: "$8,500,000"
+  },
+  {
+    title: "Look Back",
+    poster: "https://upload.wikimedia.org/wikipedia/en/e/eb/Look_Back_%28%E3%83%AB%E3%83%83%E3%82%AF%E3%83%90%E3%83%83%E3%82%AF%2C_2024%29_film_poster.jpg",
+    summary: "Look Back (2024) is a Japanese animated drama about two gifted young artists, Ayumu Fujino and Kyomoto, who meet in elementary school and bond over creating manga. Fujino, celebrated for her gag comics in the school paper, becomes both inspired and challenged when Kyomoto’s more detailed artwork appears alongside hers. Their friendship evolves through rivalry, collaboration, and time, each pushing the other to improve. Tragically, an unexpected act of violence changes everything, forcing them to reckon with loss, the passage of time, and what it truly means to pursue an artistic passion.",
+    year: 2024,
+    rating: 7.1,
+    budget: null,
+    earnings: "$12,700,000"
+  },
+  {
+    title: "The Witch",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/The_Witch_poster.png/250px-The_Witch_poster.png",
+    summary: " In 1630s New England, a devout Puritan family is banished from their colony and forced to live on the edge of a dense, ominous forest. When their baby mysteriously vanishes, paranoia and religious hysteria take hold. Teenage daughter Thomasin becomes the scapegoat for the family’s misfortunes. As madness consumes them, Thomasin ultimately embraces the dark power of the forest by signing her soul over to the Devil in the form of a black goat named Black Phillip.",
+    year: 2015,
+    rating: 8.5,
+    budget: "$4,000,000",
+    earnings: "$40,400,000"
   }
 ]
 
@@ -488,6 +610,13 @@ mongoose.connection.once('open', () => {
     const series = await MovieSeries.find();
     res.json(series);
   });
+// ...existing code...
+app.get('/oneoffsgrid', (req, res) => {
+  res.sendFile(path.join(__dirname, 'OneOffsGridDisplay.html'));
+});
+app.get('/movieseriesgrid', (req, res) => {
+  res.sendFile(path.join(__dirname, 'MovieSeriesGrid.html'));
+});
 
   app.listen(3000, () => console.log('Server running on port 3000'));
 });
