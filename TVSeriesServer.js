@@ -475,7 +475,7 @@ const OneOffArray = [
   },
   {
     title: "Battleship",
-    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Battleship_poster.jpg/250px-Battleship_poster.jpg",
+    poster: "https://upload.wikimedia.org/wikipedia/en/6/6e/Battleship_Poster.jpg",
     summary: "The story follows Alex Hopper (Taylor Kitsch), a reckless naval officer serving aboard the USS John Paul Jones. During international naval war games off the coast of Hawaii, Earth receives a response to a signal sent into space years earlier, but instead of friendly contact, alien ships arrive and erect a massive force field over the ocean. Cut off from the rest of the fleet, Alex and his crew must face off against the technologically superior invaders using strategy, courage, and classic naval tactics. As the battle intensifies, Alex matures from an impulsive troublemaker into a true leader. With help from his brother Stone (Alexander Skarsgård), fiancée Sam (Brooklyn Decker), and retired veterans, Alex launches a last stand aboard the decommissioned USS Missouri to defeat the aliens and save humanity.",
     year: 2012,
     rating: 4.4,
@@ -502,7 +502,7 @@ const OneOffArray = [
   },
   {
     title: "Match",
-    poster: "https://www.imdb.com/title/tt37436190/mediaviewer/rm610445314/?ref_=tt_ov_i",
+    poster: "https://m.media-amazon.com/images/M/MV5BNjI1ZjNlZTMtZGY3ZS00NmNhLTliYjUtYjY3MDVhNDU5ODc5XkEyXkFqcGc@._V1_QL75_UX153_.jpg",
     summary: "After Paola is matched with a handsome online suitor, she arrives for a first date to discover a house full of dark and terrifying secrets.",
     year: 2024,
     rating: 2.6,
