@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Television Series Grid — Reviews</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    .series-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; padding: 2rem; }
+    .series-card { cursor: pointer; transition: transform 0.15s; min-height: 360px; }
+    .series-card:hover { transform: translateY(-4px); }
+    .series-card .card-body { display: flex; flex-direction: column; justify-content: space-between; padding: 1rem; }
+    .series-card .card-img-top { width: 100%; height: 200px; object-fit: cover; border-radius: .4rem; margin-bottom: 1rem; }
+    .series-card .card-title { font-size: 1.1rem; margin-bottom: 0.5rem; text-align: center; }
+    .series-card .card-text { font-size: 0.95rem; line-height: 1.4; flex-grow: 1; text-align: center; }
+    .flash-outline { box-shadow: 0 0 0 6px rgba(255,200,0,0.25) !important; }
+    .modal-body { max-height: 70vh; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="h3 mb-0">Television Series Grid</h1>
+      <div class="btn-group">
+        <a class="btn btn-sm btn-outline-primary" href="index.html">Home</a>
+        <a class="btn btn-sm btn-outline-primary" href="TelevisionSeriesReviews.html">TV Series</a>
+        <a class="btn btn-sm btn-outline-primary" href="MovieSeriesReviews.html">Movie Series</a>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <button class="btn btn-primary" onclick="window.location.href='TelevisionSeriesReviews.html'">Back to TV Series</button>
+    </div>
+
+    <div id="series-grid" class="series-grid"></div>
+  </div>
+
+  <!-- Modal for series details -->
+  <div class="modal fade" id="seriesModal" tabindex="-1" aria-labelledby="seriesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="seriesModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <img id="modal-poster" src="" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-8">
+              <p id="modal-summary"></p>
+              <p><strong>Rating:</strong> <span id="modal-rating"></span></p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <div>
+            <button type="button" class="btn btn-secondary" id="prev-series">Previous Series</button>
+            <button type="button" class="btn btn-secondary" id="next-series">Next Series</button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" id="prev-ep">Previous Episode</button>
+            <button type="button" class="btn btn-secondary" id="next-ep">Next Episode</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="ratings.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let allSeries = [];
+    let currentSeriesIdx = 0;
+    let currentEpisodeIdx = 0;
+
+    function normalizeForDataTitle(raw) {
+      if (!raw) return '';
+      return encodeURIComponent(String(raw).trim()).toLowerCase();
+    }
+
+    function renderGrid(series) {
+      const grid = document.getElementById('series-grid');
+      grid.innerHTML = '';
+      series.forEach((s, idx) => {
+        const firstEp = (s.episodes && s.episodes[0]) || {};
+        const encodedTitle = normalizeForDataTitle(firstEp.title || s.name || '');
+        const card = document.createElement('div');
+        card.className = 'series-card card shadow-sm';
+        card.setAttribute('data-title', encodedTitle);
+        card.innerHTML = `
+          <img src="${firstEp.poster || ''}" class="card-img-top" alt="${s.name || ''}">
+          <div class="card-body">
+            <h6 class="card-title">${s.name || ''}</h6>
+            <p class="card-text">${(firstEp.summary || '').slice(0, 150)}${(firstEp.summary && firstEp.summary.length > 150) ? '...' : ''}</p>
+          </div>
+        `;
+        card.addEventListener('click', () => showSeriesModal(idx, 0));
+        grid.appendChild(card);
+      });
+    }
+
+    function showSeriesModal(seriesIdx, epIdx) {
+      currentSeriesIdx = seriesIdx;
+      currentEpisodeIdx = epIdx;
+      const series = allSeries[seriesIdx] || {};
+      const ep = (series.episodes && series.episodes[epIdx]) || {};
+      document.getElementById('seriesModalLabel').textContent = ep.title || series.name || '';
+      document.getElementById('modal-poster').src = ep.poster || '';
+      document.getElementById('modal-summary').textContent = ep.summary || '';
+      document.getElementById('modal-rating').textContent = ep.rating || '';
+      const modal = new bootstrap.Modal(document.getElementById('seriesModal'));
+      modal.show();
+    }
+
+    document.getElementById('prev-ep').addEventListener('click', () => {
+      const series = allSeries[currentSeriesIdx];
+      if (!series || !series.episodes) return;
+      currentEpisodeIdx = (currentEpisodeIdx - 1 + series.episodes.length) % series.episodes.length;
+      showSeriesModal(currentSeriesIdx, currentEpisodeIdx);
+    });
+
+    document.getElementById('next-ep').addEventListener('click', () => {
+      const series = allSeries[currentSeriesIdx];
+      if (!series || !series.episodes) return;
+      currentEpisodeIdx = (currentEpisodeIdx + 1) % series.episodes.length;
+      showSeriesModal(currentSeriesIdx, currentEpisodeIdx);
+    });
+
+    document.getElementById('prev-series').addEventListener('click', () => {
+      if (!allSeries.length) return;
+      currentSeriesIdx = (currentSeriesIdx - 1 + allSeries.length) % allSeries.length;
+      showSeriesModal(currentSeriesIdx, 0);
+    });
+
+    document.getElementById('next-series').addEventListener('click', () => {
+      if (!allSeries.length) return;
+      currentSeriesIdx = (currentSeriesIdx + 1) % allSeries.length;
+      showSeriesModal(currentSeriesIdx, 0);
+    });
+
+    function findCardByEncoded(encodedLower) {
+      const cards = Array.from(document.querySelectorAll('[data-title]'));
+      return cards.find(c => (c.getAttribute('data-title') || '').toLowerCase() === (encodedLower || '')) || null;
+    }
+
+    function processHash() {
+      if (!location.hash) return;
+      const rawHash = location.hash.replace(/^#/,'');
+      if (rawHash.indexOf('title=') === -1) return;
+      try {
+        const params = new URLSearchParams(rawHash);
+        const titleParam = params.get('title') || '';
+        if (!titleParam) return;
+        const encodedLower = String(titleParam).toLowerCase();
+        let decoded = '';
+        try { decoded = decodeURIComponent(titleParam); } catch (e) { decoded = titleParam; }
+        decoded = decoded.trim().toLowerCase();
+
+        // 1) exact encoded match
+        let card = findCardByEncoded(encodedLower);
+
+        // 2) try encoded(decoded)
+        if (!card) {
+          const candidateEncoded = normalizeForDataTitle(decoded);
+          card = findCardByEncoded(candidateEncoded);
+        }
+
+        // 3) try decode stored data-title and compare to decoded text
+        if (!card) {
+          const cards = Array.from(document.querySelectorAll('[data-title]'));
+          card = cards.find(c => {
+            const dt = (c.getAttribute('data-title') || '').toLowerCase();
+            try {
+              const dec = decodeURIComponent(dt).trim().toLowerCase();
+              if (dec === decoded) return true;
+            } catch (_) {}
+            return dt === encodedLower;
+          }) || null;
+        }
+
+        if (card) {
+          card.scrollIntoView({ behavior:'smooth', block:'center' });
+          card.classList.add('flash-outline');
+          setTimeout(()=> card.classList.remove('flash-outline'), 2000);
+
+          // find index in allSeries
+          const target = decoded;
+          let idx = -1;
+          for (let i = 0; i < allSeries.length; i++) {
+            const firstEp = (allSeries[i].episodes && allSeries[i].episodes[0]) || {};
+            const candidate = ((firstEp.title || allSeries[i].name || '') || '').trim().toLowerCase();
+            if (!candidate) continue;
+            if (candidate === target) { idx = i; break; }
+            try {
+              if (encodeURIComponent(candidate).toLowerCase() === encodedLower) { idx = i; break; }
+            } catch(_) {}
+          }
+          if (idx >= 0) setTimeout(()=> showSeriesModal(idx, 0), 350);
+        }
+      } catch (e) {
+        console.warn('processHash error', e);
+      }
+    }
+
+    window.addEventListener('hashchange', processHash);
+
+    fetch('/api/series')
+      .then(r => r.ok ? r.json() : Promise.reject('bad response'))
+      .then(series => {
+        allSeries = Array.isArray(series) ? series : [];
+        renderGrid(allSeries);
+        setTimeout(processHash, 120);
+      })
+      .catch(err => console.error('Failed to load series', err));
+  </script>
+</body>
+</html>
