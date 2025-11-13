@@ -5,7 +5,8 @@ const MovieSeries = require('./MovieSeries');
 const OneOff = require('./OneOffs');
 const path = require('path');
 const app = express();
-mongoose.connect('process.env.MONGODB_URI || "mongodb://localhost:27017/moviesdb');
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moviesdb');
 app.use(express.static(__dirname));
 
 const port = process.env.PORT || 3000;
