@@ -5,12 +5,9 @@ const MovieSeries = require('./MovieSeries');
 const OneOff = require('./OneOffs');
 const path = require('path');
 const app = express();
+
 console.log('MONGODB_URI:', process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moviesdb');
-app.use(express.static(__dirname));
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -585,18 +582,6 @@ const OneOffArray = [
     earnings: "$40,400,000"
   }
 ]
-
-OneOff.deleteMany({}).then(() => {
-  OneOff.insertMany(OneOffArray)
-    .then(() => console.log("One-off movies seeded!"))
-    .catch(err => console.error(err));
-});
-
-app.get('/api/oneoffs', async (req, res) => {
-  const movies = await OneOff.find();
-  res.json(movies);
-});
-
 mongoose.connection.once('open', () => {
   // Seed TV Series
   Series.deleteMany({}).then(() => {
@@ -605,17 +590,16 @@ mongoose.connection.once('open', () => {
       .catch(err => console.error(err));
   });
 
-  // Seed One-Off Movies (moved inside)
+  // Seed One-Off Movies
   OneOff.deleteMany({}).then(() => {
     OneOff.insertMany(OneOffArray)
       .then(() => console.log("One-off movies seeded!"))
       .catch(err => console.error(err));
   });
 
-  // Seed Movie Series (add this if you have data)
+  // Seed Movie Series
   MovieSeries.deleteMany({}).then(() => {
-    // Replace [] with your movie series data array if available
-    MovieSeries.insertMany([])  // e.g., insertMany(movieSeriesArray)
+    MovieSeries.insertMany([])  // Add your data here
       .then(() => console.log("Movie series seeded!"))
       .catch(err => console.error(err));
   });
@@ -623,7 +607,6 @@ mongoose.connection.once('open', () => {
   // API routes
   app.get('/api/series', async (req, res) => {
     const series = await Series.find();
-    console.log('Series from DB:', series);
     res.json(series);
   });
 
@@ -637,6 +620,13 @@ mongoose.connection.once('open', () => {
     res.json(movies);
   });
 
-  // ...existing code...
-  app.listen(3000, () => console.log('Server running on port 3000'));
+  // Static files and other routes
+  app.use(express.static(__dirname));
+  app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
+  // ... other routes ...
+
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`Server running on port ${port}`));
 });
