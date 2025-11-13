@@ -5,9 +5,11 @@ const MovieSeries = require('./MovieSeries');
 const OneOff = require('./OneOffs');
 const path = require('path');
 const app = express();
-mongoose.connect('mongodb://localhost:27017/moviesdb');
+mongoose.connect('process.env.MONGODB_URI || "mongodb://localhost:27017/moviesdb');
 app.use(express.static(__dirname));
 
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
