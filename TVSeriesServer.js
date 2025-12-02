@@ -146,6 +146,17 @@ const seriesArray = [
       { title: "S01E08 - Front Man", poster: "https://m.media-amazon.com/images/M/MV5BNzkwNzRmNDQtNDBjZC00MzIwLWEwM2YtYTQ0ZjgwNDIyMGY4XkEyXkFqcGc@._V1_QL75_UX364_.jpg", summary: "Only three players remain. They’re given a feast before the final game, tension mounting between Sang-woo, Gi-hun, and Sae-byeok. Meanwhile, Jun-ho reaches the mainland but is cornered by the Front Man, who reveals himself as Jun-ho’s missing brother before shooting him. Sae-byeok dies from her wounds that night, leaving only Gi-hun and Sang-woo alive for the final confrontation.", rating: 9.4},
       { title: "S01E09 - One Lucky Day", poster: "https://m.media-amazon.com/images/M/MV5BOWRjYmViN2QtOWE3ZS00MWUyLWIyMzUtN2RhN2IyNWNmZmJhXkEyXkFqcGc@._V1_QL75_UX457_.jpg", summary: "The final Squid Game pits Gi-hun and Sang-woo in a brutal fight. Gi-hun wins but refuses to kill his friend; Sang-woo takes his own life so Gi-hun can claim victory. Afterward, Gi-hun receives the money but is haunted by guilt and trauma. A year later, he learns the old man was secretly the game’s creator, playing for amusement before dying. As Gi-hun prepares to move on, he discovers the games continue, and vows to stop them.", rating: 9.1}
     ]
+    },
+    {
+      name: "Righteous Gemstones: Season 2 (2022)",
+      episodes: [
+        { title: "Righteous Gemstones: Season 2", poster: "https://static.wikia.nocookie.net/righteous-gemstones/images/3/36/RG_S2_Key_art.jpg/revision/latest?cb=20250320012704", summary: "", rating: 0.0},
+        { title: "S02E01 - I Speak in the Tongues of Men", poster: "https://m.media-amazon.com/images/M/MV5BZjhlMTE0Y2QtYWFmNy00YjA2LWE5YjYtZGYwNDE1NzU3ZDg2XkEyXkFqcGc@._V1_QL75_UX388_.jpg", summary: "", rating: 5.1},
+        { title: "S02E02 - After I Leave, Savage Wolves Will Come", poster: "https://m.media-amazon.com/images/M/MV5BZmIzMzU4MzMtMTE5ZC00ZTc0LTg1YzAtZWIzNDRlYTVjYWY3XkEyXkFqcGc@._V1_QL75_UX388_.jpg", summary: "", rating: 7.5},
+        { title: "S02E03 - For He Is a Liar and the Father of Lies", poster: "https://m.media-amazon.com/images/M/MV5BMTIzODg2MjMtZTVjZC00NmQ1LThhZDktNmI2Yzg5Yzc2MTE4XkEyXkFqcGc@._V1_QL75_UX125_.jpg", summary: "", rating: 7.8},
+        { title: "S02E04 - As to How They Might Destroy Him", poster: "https://m.media-amazon.com/images/M/MV5BNmE2N2E1MTItN2UyNi00ZDY0LWI4NDItNGRmODNhYTg1ODZlXkEyXkFqcGc@._V1_QL75_UX125_.jpg", summary: "", rating: 8.6},
+        { title: "S02E05 - Interlude II", poster: "https://m.media-amazon.com/images/M/MV5BNmU5NmI2Y2QtYTIzNC00NGY2LTk1ZGYtZWVhNDkzMjFhYzg4XkEyXkFqcGc@._V1_QL75_UX222_.jpg", summary: "", rating: 8.3}
+      ]
     }
 
 
@@ -580,6 +591,49 @@ const OneOffArray = [
     rating: 8.5,
     budget: "$4,000,000",
     earnings: "$40,400,000"
+  },
+  {
+    title: "Monster Hunter",
+    poster: "https://upload.wikimedia.org/wikipedia/en/e/ec/Monster_Hunter_Film_Poster.jpg",
+    summary: "Monster Hunter (2021) follows U.S. Army Ranger Captain Artemis and her squad as they’re transported through a mysterious portal into a harsh desert world filled with enormous, deadly creatures. After her team is wiped out by a Diablos, Artemis reluctantly teams up with a skilled but silent Hunter who teaches her how to survive. Together they battle monsters, including the Diablos and Nerscylla, before joining the Hunter’s Guild led by Admiral (Ron Perlman). Their goal becomes destroying the Sky Tower, the source of the portals between worlds. The film ends with Artemis fighting to shut down the tower while even larger monsters approach, hinting at further conflicts between worlds.",
+    year: 2021,
+    rating: 2.8, 
+    budget: "$60,000,000",
+    earnings: "$47,900,000"
+  },
+  {
+    title: "Insidious",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/Insidious_poster.jpg/250px-Insidious_poster.jpg",
+    summary: "Insidious (2010) centers on the Lambert family, whose young son Dalton inexplicably falls into a coma after exploring the attic. Strange, escalating supernatural events begin plaguing the house: whispers, shadowy figures, and violent hauntings. When moving homes doesn’t help, the family discovers that Dalton isn’t in a normal coma; he’s an astral projector who has wandered too far into a ghostly dimension called The Further, allowing malevolent spirits, and a red-faced demon, to try to possess his body.  With the help of psychic Elise Rainier and her paranormal team, Dalton’s father Josh ventures into The Further to rescue him. He succeeds, but the ordeal ends with a twist: Josh becomes possessed by a vengeful spirit from his past, setting up the events of the sequels.",
+    year: 2010,
+    rating: 6.8,
+    budget: "$1,500,000",
+    earnings: "$100,100,000"
+  }, 
+  {
+    title: "Jack and Jill",
+    poster: "https://i.ytimg.com/vi/GnyQF7eartg/hqdefault.jpg",
+    summary: "A broad comedy starring Adam Sandler in dual roles as both Jack, a stressed-out Los Angeles advertising executive, and Jill, his loud, needy, overly emotional twin sister from the Bronx. Jill comes to visit Jack for the holidays, but her brief stay turns into an extended, chaotic nightmare as her eccentric behavior disrupts Jack’s work and family life.  Jack tries to tolerate her because he needs to land a major ad campaign with Al Pacino, who unexpectedly becomes infatuated with Jill. As Jack exploits Jill to win Pacino’s approval, he eventually realizes he has taken her for granted. The film ends with Jack learning to appreciate his sister, while Pacino disowns the embarrassing commercial he filmed, insisting it never be seen again.",
+    year: 2011,
+    rating: 2.8,
+    budget: "$79,000,000",
+    earnings: "$149,000,000"
+  },
+  {
+    title: "Cold Pursuit",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Cold_Pursuit_poster.jpg/250px-Cold_Pursuit_poster.jpg",
+    summary: "Nels Coxman, a quiet snowplow driver in a Colorado resort town whose life unravels after his son is found dead from a forced heroin overdose. Realizing it was a murder, Nels embarks on a revenge mission against a local drug cartel led by the unhinged crime boss Viking.  Using his knowledge of the area and a calm, methodical approach, Nels begins picking off members of Viking’s organization one by one, unknowingly triggering a turf war between Viking and a rival Native American gang. As violence escalates, both sides collide in a chaotic final showdown. The film blends dark humor with brutal action, ultimately ending with Nels driving off in his snowplow, having dismantled an entire criminal empire almost single-handedly.",
+    year: 2019,
+    rating: 3.9,
+    budget: "$60,000,000",
+    earnings: "$76,300,000"
+  },
+  {
+    title: "Just Go With It",
+    poster: "https://upload.wikimedia.org/wikipedia/en/thumb/b/b8/Just_Go_with_It_Poster.jpg/250px-Just_Go_with_It_Poster.jpg",
+    summary: "Danny Maccabee, a successful Beverly Hills plastic surgeon who pretends to be unhappily married to attract women. His scheme backfires when he falls for Palmer, a woman who discovers his fake wedding ring. To keep his lie alive, Danny convinces his loyal assistant Katherine to pose as his soon-to-be ex-wife, dragging her kids into the ruse as well. The group travels to Hawaii to maintain the elaborate cover story, where Danny and Katherine grow unexpectedly closer. Through the chaos of fake identities, jealousies, and comedic mishaps, Danny realizes he truly loves Katherine and not Palmer. In the end, the truth comes out, relationships are mended, and Danny and Katherine start a real romance built on honesty instead of deception.",
+    year: 2011,
+    rating: 5.0
   }
 ]
 mongoose.connection.once('open', () => {
