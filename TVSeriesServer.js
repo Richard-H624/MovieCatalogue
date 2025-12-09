@@ -6,69 +6,6 @@ const OneOff = require('./OneOffs');
 const path = require('path');
 const app = express();
 
-console.log('MONGODB_URI:', process.env.MONGODB_URI);
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moviesdb');
-
-mongoose.connection.once('open', () => {
-  // Seed TV Series
-  Series.deleteMany({}).then(() => {
-    Series.insertMany(seriesArray)
-      .then(() => console.log("TV series seeded!"))
-      .catch(err => console.error(err));
-  });
-
-  // Seed One-Off Movies
-  OneOff.deleteMany({}).then(() => {
-    OneOff.insertMany(OneOffArray)
-      .then(() => console.log("One-off movies seeded!"))
-      .catch(err => console.error(err));
-  });
-
-  // Seed Movie Series
-  MovieSeries.deleteMany({}).then(() => {
-    MovieSeries.insertMany(movieSeriesArray)  // Changed from []
-      .then(() => console.log("Movie series seeded!"))
-      .catch(err => console.error(err));
-  });
-
-  // API routes
-  app.get('/api/series', async (req, res) => {
-    const series = await Series.find();
-    res.json(series);
-  });
-
-  app.get('/api/movieseries', async (req, res) => {
-    const series = await MovieSeries.find();
-    res.json(series);
-  });
-
-  app.get('/api/oneoffs', async (req, res) => {
-    const movies = await OneOff.find();
-    res.json(movies);
-  });
-
-  // Static files and other routes
-  app.use(express.static(__dirname));
-  app.get('/index.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  });
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  });
-  app.get('/movies', (req, res) => {
-    res.sendFile(path.join(__dirname, 'MovieSeriesReviews.html'));
-  });
-  app.get('/tv', (req, res) => {
-    res.sendFile(path.join(__dirname, 'TelevisionSeriesReviews.html'));
-  });
-  app.get('/oneoffs', (req, res) => {
-    res.sendFile(path.join(__dirname, 'OneOffMovies.html'));
-  });
-
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => console.log(`Server running on port ${port}`));
-});
-
 const movieSeriesArray = [ 
 {
     name: "Taken",
@@ -798,3 +735,66 @@ const OneOffArray = [
     earnings: null
   }
 ]
+
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/moviesdb');
+
+mongoose.connection.once('open', () => {
+  // Seed TV Series
+  Series.deleteMany({}).then(() => {
+    Series.insertMany(seriesArray)
+      .then(() => console.log("TV series seeded!"))
+      .catch(err => console.error(err));
+  });
+
+  // Seed One-Off Movies
+  OneOff.deleteMany({}).then(() => {
+    OneOff.insertMany(OneOffArray)
+      .then(() => console.log("One-off movies seeded!"))
+      .catch(err => console.error(err));
+  });
+
+  // Seed Movie Series
+  MovieSeries.deleteMany({}).then(() => {
+    MovieSeries.insertMany(movieSeriesArray)  // Changed from []
+      .then(() => console.log("Movie series seeded!"))
+      .catch(err => console.error(err));
+  });
+
+  // API routes
+  app.get('/api/series', async (req, res) => {
+    const series = await Series.find();
+    res.json(series);
+  });
+
+  app.get('/api/movieseries', async (req, res) => {
+    const series = await MovieSeries.find();
+    res.json(series);
+  });
+
+  app.get('/api/oneoffs', async (req, res) => {
+    const movies = await OneOff.find();
+    res.json(movies);
+  });
+
+  // Static files and other routes
+  app.use(express.static(__dirname));
+  app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
+  app.get('/movies', (req, res) => {
+    res.sendFile(path.join(__dirname, 'MovieSeriesReviews.html'));
+  });
+  app.get('/tv', (req, res) => {
+    res.sendFile(path.join(__dirname, 'TelevisionSeriesReviews.html'));
+  });
+  app.get('/oneoffs', (req, res) => {
+    res.sendFile(path.join(__dirname, 'OneOffMovies.html'));
+  });
+
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`Server running on port ${port}`));
+});
