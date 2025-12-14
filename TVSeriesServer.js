@@ -514,7 +514,7 @@ const OneOffArray = [
     poster: "https://upload.wikimedia.org/wikipedia/en/c/cf/Cats_2019_poster.jpg",
     summary: "lmao",
     year: 2019,
-    rating: 0,
+    rating: 0.0,
     budget: "$95,000,000",
     earnings: "$75,500,000"
   },
