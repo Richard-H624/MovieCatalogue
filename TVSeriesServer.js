@@ -5,12 +5,12 @@ const MovieSeries = require('./MovieSeries');
 const OneOff = require('./OneOffs');
 const path = require('path');
 const app = express();
-
 app.set('trust proxy', true);
+// Redirect non-www to www
 app.use((req, res, next) => {
   const host = req.headers.host && req.headers.host.toLowerCase();
-  if (host === 'theslopbucket.com') {
-    return res.redirect(301, 'https://www.theslopbucket.com' + req.originalUrl);
+  if (host && !host.startsWith('www.')) {
+    return res.redirect(301, 'https://www.' + host + req.originalUrl);
   }
   next();
 });
