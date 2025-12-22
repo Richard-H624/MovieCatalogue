@@ -11,6 +11,7 @@ app.use((req, res, next) => {
   const host = req.headers.host && req.headers.host.toLowerCase();
   const url = req.originalUrl || '/';
   if (host && !host.startsWith('www.')) {
+    console.log('Redirecting to:', 'https://www.theslopbucket.com' + url);
     return res.redirect(302, 'https://www.theslopbucket.com' + url);
   }
   next();
