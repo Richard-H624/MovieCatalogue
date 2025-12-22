@@ -13,6 +13,16 @@ app.use((req, res, next) => {
   next();
 });
 
+app.set('trust proxy', true);
+
+app.use((req, res, next) => {
+  const host = req.headers.host && req.headers.host.toLowerCase();
+  if (host === 'theslopbucket.com') {
+    return res.redirect(301, 'https://www.theslopbucket.com' + req.originalUrl);
+  }
+  next();
+});
+
 const movieSeriesArray = [ 
 {
     name: "Taken",
