@@ -11,8 +11,10 @@ app.set('trust proxy', true);
 // Redirect non-www to www
 app.use((req, res, next) => {
   const host = req.headers.host && req.headers.host.toLowerCase();
+  console.log('Request host:', host, 'URL:', req.originalUrl);
   if (host && !host.startsWith('www.')) {
-    return res.redirect(301, 'https://www.' + host + req.originalUrl);
+    console.log('Redirecting from', host, 'to', 'https://www.' + host + req.originalUrl);
+    return res.redirect(302, 'https://www.' + host + req.originalUrl);
   }
   next();
 });
