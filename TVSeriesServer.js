@@ -5,16 +5,10 @@ const MovieSeries = require('./MovieSeries');
 const OneOff = require('./OneOffs');
 const path = require('path');
 const app = express();
-// Redirect root domain to www
-app.use((req, res, next) => {
-  if (req.headers.host && req.headers.host.toLowerCase() === 'theslopbucket.com') {
-    return res.redirect(301, 'https://www.theslopbucket.com' + req.url);
-  }
-  next();
-});
 
 app.set('trust proxy', true);
 
+// Redirect root domain to www
 app.use((req, res, next) => {
   const host = req.headers.host && req.headers.host.toLowerCase();
   if (host === 'theslopbucket.com') {
